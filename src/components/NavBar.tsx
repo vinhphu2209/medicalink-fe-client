@@ -6,7 +6,7 @@ export default function NavBar() {
         <header className="relative flex justify-between items-center px-8 py-4 bg-blue-50">
             {/* Logo */}
             <div className="flex items-center gap-2">
-                <div className="text-2xl font-bold text-blue-700">Mediic</div>
+                <div className="text-2xl font-bold text-blue-700">Medicalink</div>
             </div>
 
             {/* Nav Links (ABSOLUTELY centered) */}
