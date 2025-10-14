@@ -279,15 +279,15 @@ export default function Home() {
 
           <div className="grid md:grid-cols-4 gap-6">
             {[
-              { title: "Surgery Service", image: "surgeon performing operation" },
-              { title: "Diagnostic Tests", image: "medical diagnostic equipment" },
-              { title: "General Service", image: "doctor consulting patient" },
-              { title: "Dental Service", image: "dentist examining patient" },
+              { title: "Surgery Service", image: "/images/surgery-service.png" },
+              { title: "Diagnostic Tests", image: "/images/surgery-service.png" },
+              { title: "General Service", image: "/images/surgery-service.png" },
+              { title: "Dental Service", image: "/images/surgery-service.png" },
             ].map((service, index) => (
               <Card key={index} className="overflow-hidden group cursor-pointer hover:shadow-xl transition-all">
                 <div className="relative h-48">
                   <Image
-                    src={`/.jpg?height=200&width=300&query=${service.image}`}
+                    src={service.image}
                     alt={service.title}
                     width={300}
                     height={200}
@@ -509,10 +509,10 @@ export default function Home() {
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                   <div className="w-4 h-4 bg-blue-600 rounded-full" />
                 </div>
-                <span className="font-bold text-xl">Medic</span>
+                <span className="font-bold text-xl">Medicalink</span>
               </div>
               <p className="text-blue-200 mb-4">
-                Providing quality healthcare services with experienced doctors and modern facilities since 2007.
+                Providing quality healthcare services with experienced doctors and modern facilities since 2020.
               </p>
               <div className="flex gap-3">
                 <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 cursor-pointer">
@@ -587,15 +587,15 @@ export default function Home() {
               <ul className="space-y-3 text-blue-200">
                 <li className="flex items-start gap-2">
                   <Phone className="w-4 h-4 mt-1 flex-shrink-0" />
-                  <span>+1 234 567 890</span>
+                  <span>+84 834277110</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Mail className="w-4 h-4 mt-1 flex-shrink-0" />
-                  <span>info@medic.com</span>
+                  <span>medicalinkinfor@gmail.com</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
-                  <span>123 Medical St, Health City</span>
+                  <span>54 Nguyễn Lương Bằng, Liên Chiểu, Đà Nẵng, Việt Nam</span>
                 </li>
               </ul>
             </div>
