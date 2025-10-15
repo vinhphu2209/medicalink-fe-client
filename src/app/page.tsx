@@ -280,9 +280,9 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-6">
             {[
               { title: "Surgery Service", image: "/images/surgery-service.png" },
-              { title: "Diagnostic Tests", image: "/images/surgery-service.png" },
-              { title: "General Service", image: "/images/surgery-service.png" },
-              { title: "Dental Service", image: "/images/surgery-service.png" },
+              { title: "Diagnostic Tests", image: "/images/diagnostic-tests.png" },
+              { title: "General Service", image: "/images/general-service.png" },
+              { title: "Dental Service", image: "/images/dental-service.png" },
             ].map((service, index) => (
               <Card key={index} className="overflow-hidden group cursor-pointer hover:shadow-xl transition-all">
                 <div className="relative h-48">
