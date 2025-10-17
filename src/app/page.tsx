@@ -18,22 +18,22 @@ export default function Home() {
             <span className="text-white font-bold text-xl">Medic</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-white">
-            <Link href="#" className="hover:text-blue-300">
+            <Link href="/" className="hover:text-blue-300">
               Home
             </Link>
-            <Link href="#" className="hover:text-blue-300">
+            <Link href="/about-us" className="hover:text-blue-300">
               About us
             </Link>
-            <Link href="#" className="hover:text-blue-300">
+            <Link href="/services" className="hover:text-blue-300">
               Services
             </Link>
-            <Link href="#" className="hover:text-blue-300">
+            <Link href="/doctors" className="hover:text-blue-300">
               Doctors
             </Link>
-            <Link href="#" className="hover:text-blue-300">
+            <Link href="/news" className="hover:text-blue-300">
               News
             </Link>
-            <Link href="#" className="hover:text-blue-300">
+            <Link href="/contact" className="hover:text-blue-300">
               Contact
             </Link>
           </div>
@@ -113,7 +113,13 @@ export default function Home() {
               {/* Floating Card */}
               <Card className="absolute bottom-8 left-8 p-4 bg-white shadow-xl">
                 <div className="flex items-center gap-3">
-                  <Image src="/group-of-diverse-doctors.jpg" alt="Doctors" width={60} height={60} className="rounded-lg" />
+                  <Image
+                    src="/group-of-diverse-doctors.jpg"
+                    alt="Doctors"
+                    width={60}
+                    height={60}
+                    className="rounded-lg"
+                  />
                   <div>
                     <div className="font-semibold text-sm">Medical Achievement</div>
                     <div className="text-xs text-gray-600">Health Protection</div>
@@ -279,15 +285,15 @@ export default function Home() {
 
           <div className="grid md:grid-cols-4 gap-6">
             {[
-              { title: "Surgery Service", image: "/images/surgery-service.png" },
-              { title: "Diagnostic Tests", image: "/images/diagnostic-tests.png" },
-              { title: "General Service", image: "/images/general-service.png" },
-              { title: "Dental Service", image: "/images/dental-service.png" },
+              { title: "Surgery Service", image: "surgeon performing operation" },
+              { title: "Diagnostic Tests", image: "medical diagnostic equipment" },
+              { title: "General Service", image: "doctor consulting patient" },
+              { title: "Dental Service", image: "dentist examining patient" },
             ].map((service, index) => (
               <Card key={index} className="overflow-hidden group cursor-pointer hover:shadow-xl transition-all">
                 <div className="relative h-48">
                   <Image
-                    src={service.image}
+                    src={`/.jpg?height=200&width=300&query=${service.image}`}
                     alt={service.title}
                     width={300}
                     height={200}
@@ -509,10 +515,10 @@ export default function Home() {
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                   <div className="w-4 h-4 bg-blue-600 rounded-full" />
                 </div>
-                <span className="font-bold text-xl">Medicalink</span>
+                <span className="font-bold text-xl">Medic</span>
               </div>
               <p className="text-blue-200 mb-4">
-                Providing quality healthcare services with experienced doctors and modern facilities since 2020.
+                Providing quality healthcare services with experienced doctors and modern facilities since 2007.
               </p>
               <div className="flex gap-3">
                 <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 cursor-pointer">
@@ -534,22 +540,22 @@ export default function Home() {
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-blue-200">
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link href="/about-us" className="hover:text-white">
                     About
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link href="/services" className="hover:text-white">
                     Services
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link href="/doctors" className="hover:text-white">
                     Doctors
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link href="/news" className="hover:text-white">
                     News
                   </Link>
                 </li>
@@ -587,15 +593,15 @@ export default function Home() {
               <ul className="space-y-3 text-blue-200">
                 <li className="flex items-start gap-2">
                   <Phone className="w-4 h-4 mt-1 flex-shrink-0" />
-                  <span>+84 834277110</span>
+                  <span>+1 234 567 890</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Mail className="w-4 h-4 mt-1 flex-shrink-0" />
-                  <span>medicalinkinfor@gmail.com</span>
+                  <span>info@medic.com</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
-                  <span>54 Nguyễn Lương Bằng, Liên Chiểu, Đà Nẵng, Việt Nam</span>
+                  <span>123 Medical St, Health City</span>
                 </li>
               </ul>
             </div>
