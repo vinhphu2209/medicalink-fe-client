@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge"
 import { MapPin, Phone, Mail } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import parser from "html-react-parser"
 
 interface DoctorCardProps {
   id: string
@@ -91,7 +92,9 @@ export function DoctorCard({
         )}
 
         {/* Introduction Preview */}
-        <p className="text-sm text-gray-600 line-clamp-2">{introduction}</p>
+        <div className="text-sm text-gray-600 line-clamp-2">
+          {parser(introduction || '')}
+        </div>
 
         {/* Work Location */}
         {workLocations && workLocations.length > 0 && (
@@ -101,17 +104,6 @@ export function DoctorCard({
           </div>
         )}
 
-        {/* Contact Info */}
-        <div className="space-y-2 pt-2 border-t border-gray-200">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Phone className="w-4 h-4 text-blue-500" />
-            <span className="truncate">{phone}</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Mail className="w-4 h-4 text-blue-500" />
-            <span className="truncate">{email}</span>
-          </div>
-        </div>
 
         {/* View Profile Link */}
         <Link

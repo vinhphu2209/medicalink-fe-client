@@ -10,13 +10,12 @@ const nextConfig: NextConfig = {
       },
     ],
 
-    // Nếu bạn có dùng ảnh từ domain ngoài, ví dụ CDN
-    // remotePatterns: [
-    //   {
-    //     protocol: "https",
-    //     hostname: "cdn.medicalink.com",
-    //   },
-    // ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*",
+      },
+    ],
   },
 };
 

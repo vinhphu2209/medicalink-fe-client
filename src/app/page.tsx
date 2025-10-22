@@ -15,7 +15,7 @@ export default function Home() {
             <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
               <div className="w-4 h-4 bg-blue-600 rounded-full" />
             </div>
-            <span className="text-white font-bold text-xl">Medic</span>
+            <span className="text-white font-bold text-xl">Medicalink</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-white">
             <Link href="/" className="hover:text-blue-300">
@@ -42,7 +42,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] pt-24 pb-16 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] pt-24 pb-16 h-dvh overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full" />
           <div className="absolute bottom-20 right-20 w-24 h-24 border-2 border-white rounded-full" />
@@ -285,7 +285,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-4 gap-6">
             {[
-              { title: "Surgery Service", image: "surgeon performing operation" },
+              { title: "Surgery Service", image: "surgery-service" },
               { title: "Diagnostic Tests", image: "medical diagnostic equipment" },
               { title: "General Service", image: "doctor consulting patient" },
               { title: "Dental Service", image: "dentist examining patient" },
