@@ -63,7 +63,7 @@ export default function DoctorsPage() {
     const fetchDoctors = async () => {
       try {
         setLoading(true)
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.medicalink.click/api"
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL
         const url = new URL(`${baseUrl}/doctors/profile/public`)
         url.searchParams.append("page", currentPage.toString())
         url.searchParams.append("limit", "20")

@@ -55,21 +55,31 @@ export default function BlogsPage() {
     const fetchBlogs = async () => {
       try {
         setLoading(true)
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.medicalink.click/api"
-        const url = new URL(`${baseUrl}/blogs`)
-        url.searchParams.append("limit", "2")
+
+        // Base URL (đặt trong .env hoặc fallback)
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL
+
+        // Endpoint chính xác
+        const url = new URL(`${baseUrl}/blogs/public`)
+
+        // Thêm các query params
+        url.searchParams.append("sortBy", "createdAt")
+        url.searchParams.append("sortOrder", "DESC")
         url.searchParams.append("page", currentPage.toString())
+        url.searchParams.append("limit", "5") // tuỳ bạn muốn giới hạn bao nhiêu
 
-
+        // Gọi API
         const response = await fetch(url.toString())
         if (!response.ok) {
           throw new Error("Failed to fetch blogs")
         }
 
+        // Parse JSON
         const data: ApiResponse = await response.json()
-        // Filter only published blogs
-        const publishedBlogs = data.data.filter((blog) => blog.status === "PUBLISHED")
-        setBlogs(publishedBlogs)
+
+        // Set data vào state
+        // (Không cần filter status vì API `/public` chỉ trả blog đã PUBLISHED)
+        setBlogs(data.data)
         setMeta(data.meta)
         setError(null)
       } catch (err) {
@@ -83,6 +93,7 @@ export default function BlogsPage() {
 
     fetchBlogs()
   }, [currentPage])
+
 
   return (
     <div className="min-h-screen bg-gray-50">
