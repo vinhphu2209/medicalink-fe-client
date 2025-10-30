@@ -101,3 +101,20 @@
 .animate-scroll {
   animation: scroll 20s linear infinite;
 }
+
+/* from gpt */
+@keyframes scrollLoop {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-loop {
+  display: flex;
+  width: max-content;
+  animation: scrollLoop 40s linear infinite;
+}
+

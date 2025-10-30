@@ -21,17 +21,17 @@ export default function Home() {
             <Link href="/" className="hover:text-blue-300">
               Home
             </Link>
-            <Link href="/about-us" className="hover:text-blue-300">
-              About us
-            </Link>
-            <Link href="/services" className="hover:text-blue-300">
-              Services
+            <Link href="/specialties" className="hover:text-blue-300">
+              Specialties
             </Link>
             <Link href="/doctors" className="hover:text-blue-300">
               Doctors
             </Link>
-            <Link href="/news" className="hover:text-blue-300">
-              News
+            <Link href="/services" className="hover:text-blue-300">
+              Services
+            </Link>
+            <Link href="/blogs" className="hover:text-blue-300">
+              Blogs
             </Link>
             <Link href="/contact" className="hover:text-blue-300">
               Contact
@@ -131,149 +131,177 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Quick Access Cards */}
-      <section className="max-w-7xl mx-auto px-6 -mt-8 relative z-10">
-        <div className="grid md:grid-cols-3 gap-6">
-          <Card className="p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold">Our Professionals</h3>
-              <ArrowRight className="w-5 h-5 text-gray-400" />
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex -space-x-3">
-                <div className="w-10 h-10 rounded-full bg-blue-400 border-2 border-white" />
-                <div className="w-10 h-10 rounded-full bg-blue-500 border-2 border-white" />
-                <div className="w-10 h-10 rounded-full bg-blue-600 border-2 border-white" />
+
+
+      {/* About & Specialist Section */}
+      <section className="h-dvh flex flex-col justify-center">
+        {/* About Medical Section */}
+        <div className="max-w-7xl mx-auto px-6 py-20">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="relative">
+              <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-100 rounded-full -z-10" />
+              <Image
+                src="/male-doctor-in-blue-scrubs-with-tablet-smiling-pro.jpg"
+                alt="Doctor"
+                width={400}
+                height={500}
+                className="rounded-2xl w-full h-auto"
+              />
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-500 rounded-full flex items-center justify-center text-white -z-10">
+                <div className="text-center">
+                  <div className="text-2xl font-bold">10+</div>
+                  <div className="text-xs">Years</div>
+                </div>
               </div>
+            </div>
+
+            <div className="space-y-6">
               <div>
-                <div className="font-bold text-lg">150+</div>
-                <div className="text-sm text-gray-600">Doctors</div>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6 hover:shadow-lg transition-shadow bg-blue-500 text-white">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold">Appointment</h3>
-              <Calendar className="w-5 h-5" />
-            </div>
-            <div className="text-center py-4">
-              <div className="text-3xl font-bold mb-2">24</div>
-              <div className="text-sm opacity-90">DECEMBER 2024</div>
-            </div>
-            <Button className="w-full bg-white text-blue-500 hover:bg-gray-100">Book Now</Button>
-          </Card>
-
-          <Card className="p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold">Locations</h3>
-              <MapPin className="w-5 h-5 text-gray-400" />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-blue-500">
-                <MapPin className="w-4 h-4" />
-                <span className="text-sm">Find Nearest Clinic</span>
-              </div>
-              <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">View Map</Button>
-            </div>
-          </Card>
-        </div>
-      </section>
-
-      {/* About Medical Section */}
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-100 rounded-full -z-10" />
-            <Image
-              src="/male-doctor-in-blue-scrubs-with-tablet-smiling-pro.jpg"
-              alt="Doctor"
-              width={400}
-              height={500}
-              className="rounded-2xl w-full h-auto"
-            />
-            <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-500 rounded-full flex items-center justify-center text-white -z-10">
-              <div className="text-center">
-                <div className="text-2xl font-bold">10+</div>
-                <div className="text-xs">Years</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-4xl font-bold mb-2">
-                ABOUT MEDICAL <span className="text-blue-500">✦</span>
-              </h2>
-              <div className="flex items-center gap-4 text-blue-500 font-semibold">
-                <span>10+</span>
-                <span className="text-gray-400">Years of Experience</span>
-              </div>
-            </div>
-
-            <p className="text-gray-600 leading-relaxed">
-              Since 2007 We're working Medical group of more than 12000+ Patients help from our website
-            </p>
-
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-blue-500 mt-1 flex-shrink-0" />
-                <div>
-                  <div className="font-semibold">We're very specialized</div>
-                  <div className="text-sm text-gray-600">Expert doctors in various medical fields</div>
+                <h2 className="text-4xl font-bold mb-2">
+                  ABOUT MEDICAL <span className="text-blue-500">✦</span>
+                </h2>
+                <div className="flex items-center gap-4 text-blue-500 font-semibold">
+                  <span>10+</span>
+                  <span className="text-gray-400">Years of Experience</span>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-blue-500 mt-1 flex-shrink-0" />
-                <div>
-                  <div className="font-semibold">Professional and Experienced</div>
-                  <div className="text-sm text-gray-600">Highly qualified medical professionals</div>
+
+              <p className="text-gray-600 leading-relaxed">
+                Since 2007 We're working Medical group of more than 12000+ Patients help from our website
+              </p>
+
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-blue-500 mt-1 flex-shrink-0" />
+                  <div>
+                    <div className="font-semibold">We're very specialized</div>
+                    <div className="text-sm text-gray-600">Expert doctors in various medical fields</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-blue-500 mt-1 flex-shrink-0" />
+                  <div>
+                    <div className="font-semibold">Professional and Experienced</div>
+                    <div className="text-sm text-gray-600">Highly qualified medical professionals</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-blue-500 mt-1 flex-shrink-0" />
+                  <div>
+                    <div className="font-semibold">24/7 Emergency Support</div>
+                    <div className="text-sm text-gray-600">Round the clock medical assistance</div>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-blue-500 mt-1 flex-shrink-0" />
-                <div>
-                  <div className="font-semibold">24/7 Emergency Support</div>
-                  <div className="text-sm text-gray-600">Round the clock medical assistance</div>
-                </div>
-              </div>
-            </div>
 
-            <Button className="bg-blue-500 hover:bg-blue-600 text-white">Read More</Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Specialist Categories */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-700 py-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center gap-8 text-white animate-scroll">
-            <div className="flex items-center gap-2 whitespace-nowrap">
-              <span className="text-xl">✦</span>
-              <span className="font-semibold">CARDIOLOGIST</span>
-            </div>
-            <div className="flex items-center gap-2 whitespace-nowrap">
-              <span className="text-xl">✦</span>
-              <span className="font-semibold">NEUROLOGIST</span>
-            </div>
-            <div className="flex items-center gap-2 whitespace-nowrap">
-              <span className="text-xl">✦</span>
-              <span className="font-semibold">GYNECOLOGIST</span>
-            </div>
-            <div className="flex items-center gap-2 whitespace-nowrap">
-              <span className="text-xl">✦</span>
-              <span className="font-semibold">PEDIATRICIAN</span>
-            </div>
-            <div className="flex items-center gap-2 whitespace-nowrap">
-              <span className="text-xl">✦</span>
-              <span className="font-semibold">DERMATOLOGIST</span>
+              <Button className="bg-blue-500 hover:bg-blue-600 text-white">Read More</Button>
             </div>
           </div>
         </div>
+
+        {/* Specialist Categories */}
+        {/* <div className="w-full bg-gradient-to-r from-blue-600 to-blue-700 py-6 overflow-hidden mt-auto">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex items-center gap-8 text-white animate-scroll">
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <span className="text-xl">✦</span>
+                <span className="font-semibold">CARDIOLOGIST</span>
+              </div>
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <span className="text-xl">✦</span>
+                <span className="font-semibold">NEUROLOGIST</span>
+              </div>
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <span className="text-xl">✦</span>
+                <span className="font-semibold">GYNECOLOGIST</span>
+              </div>
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <span className="text-xl">✦</span>
+                <span className="font-semibold">PEDIATRICIAN</span>
+              </div>
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <span className="text-xl">✦</span>
+                <span className="font-semibold">DERMATOLOGIST</span>
+              </div>
+            </div>
+          </div>
+        </div> */}
+        {/* Specialist Categories */}
+        <div className="w-full bg-gradient-to-r from-blue-600 to-blue-700 py-6 overflow-hidden mt-auto">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex items-center gap-8 text-white animate-scroll-loop">
+              {[
+                "CARDIOLOGIST",
+                "NEUROLOGIST",
+                "GYNECOLOGIST",
+                "PEDIATRICIAN",
+                "DERMATOLOGIST",
+                "ORTHOPEDIST",
+                "PSYCHIATRIST",
+                "UROLOGIST",
+                "ENDOCRINOLOGIST",
+                "PULMONOLOGIST",
+                "GASTROENTEROLOGIST",
+                "OPHTHALMOLOGIST",
+                "DENTIST",
+                "ONCOLOGIST",
+                "NEPHROLOGIST",
+                "RHEUMATOLOGIST",
+                "RADIOLOGIST",
+                "PATHOLOGIST",
+                "HEMATOLOGIST",
+                "IMMUNOLOGIST",
+                "ANESTHESIOLOGIST",
+                "OTOLARYNGOLOGIST",
+                "PLASTIC SURGEON",
+                "VASCULAR SURGEON",
+              ].map((spec, i) => (
+                <div key={i} className="flex items-center gap-2 whitespace-nowrap">
+                  <span className="text-xl">✦</span>
+                  <span className="font-semibold">{spec}</span>
+                </div>
+              ))}
+
+              {/* Bản 2: nhân đôi để tạo hiệu ứng loop */}
+              {[
+                "CARDIOLOGIST",
+                "NEUROLOGIST",
+                "GYNECOLOGIST",
+                "PEDIATRICIAN",
+                "DERMATOLOGIST",
+                "ORTHOPEDIST",
+                "PSYCHIATRIST",
+                "UROLOGIST",
+                "ENDOCRINOLOGIST",
+                "PULMONOLOGIST",
+                "GASTROENTEROLOGIST",
+                "OPHTHALMOLOGIST",
+                "DENTIST",
+                "ONCOLOGIST",
+                "NEPHROLOGIST",
+                "RHEUMATOLOGIST",
+                "RADIOLOGIST",
+                "PATHOLOGIST",
+                "HEMATOLOGIST",
+                "IMMUNOLOGIST",
+                "ANESTHESIOLOGIST",
+                "OTOLARYNGOLOGIST",
+                "PLASTIC SURGEON",
+                "VASCULAR SURGEON",
+              ].map((spec, i) => (
+                <div key={i + 100} className="flex items-center gap-2 whitespace-nowrap">
+                  <span className="text-xl">✦</span>
+                  <span className="font-semibold">{spec}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
       </section>
 
       {/* Best Services */}
-      <section className="bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] py-20">
+      <section className="bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] py-20 h-dvh">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between mb-12">
             <div className="text-white">
@@ -616,9 +644,6 @@ export default function Home() {
         </div>
 
         {/* Doctor Image in Footer */}
-        <div className="absolute bottom-0 right-20 hidden lg:block">
-          <Image src="/smiling-doctor.png" alt="Doctor" width={200} height={300} className="object-contain" />
-        </div>
       </footer>
     </div>
   )
