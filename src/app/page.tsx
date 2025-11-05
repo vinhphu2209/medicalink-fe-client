@@ -7,42 +7,9 @@ import Link from "next/link"
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      {/* Navigation */}
-      <nav className="absolute top-0 left-0 right-0 z-50 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <div className="w-4 h-4 bg-blue-600 rounded-full" />
-            </div>
-            <span className="text-white font-bold text-xl">Medicalink</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8 text-white">
-            <Link href="/" className="hover:text-blue-300">
-              Home
-            </Link>
-            <Link href="/specialties" className="hover:text-blue-300">
-              Specialties
-            </Link>
-            <Link href="/doctors" className="hover:text-blue-300">
-              Doctors
-            </Link>
-            <Link href="/services" className="hover:text-blue-300">
-              Services
-            </Link>
-            <Link href="/blogs" className="hover:text-blue-300">
-              Blogs
-            </Link>
-            <Link href="/contact" className="hover:text-blue-300">
-              Contact
-            </Link>
-          </div>
-          <Button className="bg-blue-500 hover:bg-blue-600 text-white">Appointment</Button>
-        </div>
-      </nav>
-
+    <div className="min-h-screen pt-[68px]">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] pt-24 pb-16 h-dvh overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] pt-24 pb-16 overflow-hidden h-[calc(100dvh-68px)] ">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full" />
           <div className="absolute bottom-20 right-20 w-24 h-24 border-2 border-white rounded-full" />
@@ -134,7 +101,7 @@ export default function Home() {
 
 
       {/* About & Specialist Section */}
-      <section className="h-dvh flex flex-col justify-center">
+      <section className="flex flex-col justify-center h-[calc(100dvh-68px)]">
         {/* About Medical Section */}
         <div className="max-w-7xl mx-auto px-6 py-20">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -301,7 +268,7 @@ export default function Home() {
       </section>
 
       {/* Best Services */}
-      <section className="bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] py-20 h-dvh">
+      <section className="bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] py-20 h-[calc(100dvh-68px)]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between mb-12">
             <div className="text-white">

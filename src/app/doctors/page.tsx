@@ -101,37 +101,7 @@ export default function DoctorsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 px-6 py-4 bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-              <div className="w-4 h-4 bg-white rounded-full" />
-            </div>
-            <span className="text-blue-600 font-bold text-xl">Medic</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8 text-gray-700">
-            <a href="/" className="hover:text-blue-600">
-              Home
-            </a>
-            <a href="#" className="hover:text-blue-600">
-              About us
-            </a>
-            <a href="#" className="hover:text-blue-600">
-              Services
-            </a>
-            <a href="/doctors" className="text-blue-600 font-semibold">
-              Doctors
-            </a>
-            <a href="#" className="hover:text-blue-600">
-              News
-            </a>
-            <a href="#" className="hover:text-blue-600">
-              Contact
-            </a>
-          </div>
-          <Button className="bg-blue-500 hover:bg-blue-600 text-white">Appointment</Button>
-        </div>
-      </nav>
+
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] py-16">
