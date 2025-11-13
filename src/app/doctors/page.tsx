@@ -5,29 +5,20 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { DoctorCard } from "@/components/doctor-card"
+import { DoctorCard } from "@/components/doctors/doctor-card"
 import { ChevronLeft, ChevronRight, Search } from "lucide-react"
 
 interface Doctor {
   id: string
+  profileId: string
   fullName: string
-  email: string
-  phone: string
   degree: string
   position: string[]
-  introduction: string
   avatarUrl: string
-  portrait: string
-  specialties: Array<{
-    id: string
-    name: string
-    slug: string
-  }>
   workLocations: Array<{
     id: string
     name: string
     address: string
-    phone: string
   }>
 }
 
@@ -52,7 +43,7 @@ export default function DoctorsPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [meta, setMeta] = useState({
     page: 1,
-    limit: 20,
+    limit: 12,
     total: 0,
     hasNext: false,
     hasPrev: false,
@@ -63,10 +54,10 @@ export default function DoctorsPage() {
     const fetchDoctors = async () => {
       try {
         setLoading(true)
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
         const url = new URL(`${baseUrl}/doctors/profile/public`)
         url.searchParams.append("page", currentPage.toString())
-        url.searchParams.append("limit", "20")
+        url.searchParams.append("limit", "12") // changed limit from 20 to 12
 
         if (searchTerm) {
           url.searchParams.append("search", searchTerm)
@@ -102,9 +93,8 @@ export default function DoctorsPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
 
-
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] py-16">
+      <section className="relative bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] py-16 pt-32">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center text-white space-y-4">
             <h1 className="text-5xl md:text-6xl font-bold">
@@ -182,9 +172,19 @@ export default function DoctorsPage() {
           </div>
         ) : (
           <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {" "}
+              {/* changed grid from 3 columns to 4 columns */}
               {doctors.map((doctor) => (
-                <DoctorCard key={doctor.id} {...doctor} />
+                <DoctorCard
+                  key={doctor.profileId}
+                  id={doctor.profileId}
+                  fullName={doctor.fullName}
+                  degree={doctor.degree}
+                  position={doctor.position}
+                  avatarUrl={doctor.avatarUrl}
+                  workLocations={doctor.workLocations}
+                />
               ))}
             </div>
 

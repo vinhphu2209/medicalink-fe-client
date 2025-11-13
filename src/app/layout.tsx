@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { Navbar } from '@/components/shared/navbar'
+import { Toaster } from "@/components/ui/sonner"
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
@@ -23,6 +24,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Analytics />
+        <Toaster duration={5000} richColors />
       </body>
     </html>
   )
