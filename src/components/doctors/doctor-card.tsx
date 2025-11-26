@@ -9,10 +9,10 @@ interface DoctorCardProps {
   fullName: string
   degree: string
   position: string[]
-  introduction: string
+  introduction?: string
   avatarUrl: string
-  portrait: string
-  specialties: Array<{
+  portrait?: string
+  specialties?: Array<{
     id: string
     name: string
     slug: string
@@ -21,10 +21,9 @@ interface DoctorCardProps {
     id: string
     name: string
     address: string
-    phone: string
   }>
-  email: string
-  phone: string
+  email?: string
+  phone?: string
 }
 
 export function DoctorCard({
@@ -37,8 +36,7 @@ export function DoctorCard({
   portrait,
   specialties,
   workLocations,
-  email,
-  phone,
+  email
 }: DoctorCardProps) {
   return (
     <Link href={`/doctors/${id}`}>
