@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -112,9 +112,12 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .animate-scroll-loop {
   display: flex;
   width: max-content;
   animation: scrollLoop 40s linear infinite;
 }
-
