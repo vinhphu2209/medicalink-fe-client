@@ -114,6 +114,7 @@
 
 html {
   scroll-behavior: smooth;
+  overscroll-behavior-y: none;
 }
 
 .animate-scroll-loop {

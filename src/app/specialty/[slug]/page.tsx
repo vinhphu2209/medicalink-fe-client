@@ -2,7 +2,7 @@ import { use } from 'react';
 
 import Link from 'next/link';
 
-import parse from 'html-react-parser';
+import parser from 'html-react-parser';
 import {
   ArrowLeft,
   Calendar,
@@ -13,10 +13,11 @@ import {
   Users,
 } from 'lucide-react';
 
-import { DoctorCard } from '@/components/doctors/doctor-card';
+import { DoctorCardSmall } from '@/components/doctors/doctor-card-small';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { replaceNbsps } from '@/lib/utils';
 
 interface SpecialtyDetail {
   id: string;
@@ -117,17 +118,17 @@ async function SpecialtyContent({ slug }: { slug: string }) {
                 <span className='text-sm font-medium'>Medical Specialty</span>
               </div>
 
-              <h1 className='text-4xl md:text-5xl font-bold leading-tight'>
+              <h1 className='text-2xl md:text-3xl font-bold leading-tight'>
                 {specialty.name}
               </h1>
 
               {specialty.description && (
-                <p className='text-blue-100 text-lg max-w-3xl leading-relaxed'>
+                <p className='text-blue-100 text-md max-w-3xl leading-relaxed'>
                   {specialty.description}
                 </p>
               )}
 
-              <div className='flex flex-wrap items-center gap-3 pt-4'>
+              <div className='flex flex-wrap items-center gap-2'>
                 <Badge
                   variant='secondary'
                   className='bg-white/20 text-white border-white/30 backdrop-blur-sm'
@@ -167,17 +168,17 @@ async function SpecialtyContent({ slug }: { slug: string }) {
                   >
                     <CardHeader>
                       <div className='flex items-center gap-3'>
-                        <div className='p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg'>
-                          <Info className='w-5 h-5 text-blue-600 dark:text-blue-400' />
+                        <div className='p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg'>
+                          <Info className='w-4 h-4 text-blue-600 dark:text-blue-400' />
                         </div>
-                        <h2 className='text-xl font-bold text-gray-900 dark:text-white'>
+                        <h2 className='text-lg font-bold text-gray-900 dark:text-white'>
                           {section.name}
                         </h2>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <div className='text-gray-700 dark:text-gray-300 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mb-4 [&_h1]:text-gray-900 [&_h1]:dark:text-white [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mb-3 [&_h2]:text-gray-900 [&_h2]:dark:text-white [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mb-2 [&_h3]:text-gray-900 [&_h3]:dark:text-white [&_p]:mb-4 [&_p]:leading-relaxed [&_a]:text-blue-600 [&_a]:dark:text-blue-400 [&_a]:underline [&_a]:hover:text-blue-700 [&_a]:dark:hover:text-blue-300 [&_strong]:font-semibold [&_strong]:text-gray-900 [&_strong]:dark:text-white [&_ul]:list-disc [&_ul]:ml-6 [&_ul]:mb-4 [&_ol]:list-decimal [&_ol]:ml-6 [&_ol]:mb-4 [&_li]:mb-2 [&_blockquote]:border-l-4 [&_blockquote]:border-blue-500 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:my-4 overflow-x-hidden **:wrap-break-word'>
-                        {parse(section.content)}
+                      <div className='text-sm *:mb-2 *:wrap-normal leading-5'>
+                        {parser(replaceNbsps(section.content))}
                       </div>
                     </CardContent>
                   </Card>
@@ -196,17 +197,17 @@ async function SpecialtyContent({ slug }: { slug: string }) {
             {/* Right Column - Doctors List */}
             <div className='space-y-6'>
               <div className='sticky top-24'>
-                <Card className='bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800'>
+                <Card className='bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 gap-2'>
                   <CardHeader>
-                    <div className='flex items-center gap-3'>
-                      <div className='p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg'>
-                        <Users className='w-5 h-5 text-blue-600 dark:text-blue-400' />
+                    <div className='flex items-center gap-2'>
+                      <div className='p-1 bg-blue-100 dark:bg-blue-900/30 rounded-lg'>
+                        <Users className='w-4 h-4 text-blue-600 dark:text-blue-400' />
                       </div>
-                      <h2 className='text-xl font-bold text-gray-900 dark:text-white'>
+                      <h2 className='text-md font-bold text-gray-900 dark:text-white'>
                         Our Specialists
                       </h2>
                     </div>
-                    <p className='text-sm text-gray-600 dark:text-gray-400 mt-2'>
+                    <p className='text-sm text-gray-600 dark:text-gray-400'>
                       {doctors.length}{' '}
                       {doctors.length === 1
                         ? 'expert doctor'
@@ -214,28 +215,28 @@ async function SpecialtyContent({ slug }: { slug: string }) {
                       available
                     </p>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className='p-2 pb-0'>
                     {doctors.length > 0 ? (
-                      <div className='space-y-4'>
+                      <div className='flex flex-col gap-2'>
                         {doctors.map((doctor) => (
-                          <DoctorCard
+                          <DoctorCardSmall
                             key={doctor.id}
                             id={doctor.id}
                             fullName={doctor.fullName}
                             degree={doctor.degree || ''}
-                            position={doctor.position}
                             introduction={doctor.introduction || undefined}
                             avatarUrl={
                               doctor.avatarUrl || '/placeholder-user.jpg'
                             }
-                            specialties={doctor.specialties}
-                            workLocations={doctor.workLocations}
+                            portrait={doctor.avatarUrl || undefined}
                           />
                         ))}
                         <Link href={`/doctors?specialty=${specialty.id}`}>
-                          <Button variant='outline' className='w-full'>
+                          <Button
+                            variant='outline'
+                            className='w-full mt-2 -mb-2'
+                          >
                             View All Doctors
-                            <Calendar className='w-4 h-4 ml-2' />
                           </Button>
                         </Link>
                       </div>

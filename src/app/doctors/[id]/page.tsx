@@ -153,7 +153,7 @@ export default function DoctorDetailPage({
               <div>
                 <h1 className='text-3xl md:text-4xl font-bold text-gray-900 mb-2'>
                   {doctor.degree && (
-                    <span className='text-blue-600 font-normal text-xl md:text-2xl block mb-1'>
+                    <span className='text-blue-600 font-normal text-md md:text-lg block'>
                       {doctor.degree}
                     </span>
                   )}
@@ -214,7 +214,7 @@ export default function DoctorDetailPage({
                 )}
               </div>
 
-              <div className='pt-2 flex justify-center md:justify-start'>
+              <div className='pt-2 flex justify-center md:justify-end'>
                 <Link href={`/appointments`}>
                   <Button
                     size='lg'

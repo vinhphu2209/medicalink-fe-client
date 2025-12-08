@@ -49,10 +49,10 @@ export default function SpecialtyCard({ specialty }: { specialty: any }) {
         </CardHeader>
 
         <CardContent className='flex-1 px-5 py-0 space-y-4'>
-          <h3 className='text-xl font-bold mb-2 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors'>
+          <h3 className='text-lg leading-6 font-bold mb-2 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors'>
             {name}
           </h3>
-          <p className='text-sm text-gray-600 dark:text-gray-400 line-clamp-3 leading-5'>
+          <p className='text-sm text-gray-600 dark:text-gray-400 line-clamp-3 leading-4.5'>
             {description ||
               'Comprehensive medical care provided by experienced specialists dedicated to your health and well-being.'}
           </p>
