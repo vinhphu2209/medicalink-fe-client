@@ -1,263 +1,289 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { DoctorCard } from "@/components/doctors/doctor-card"
-import { ChevronLeft, ChevronRight, Search } from "lucide-react"
+import {
+  Award,
+  Baby,
+  Brain,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Heart,
+  Search,
+  Shield,
+  Stethoscope,
+  Users,
+} from 'lucide-react';
+
+import { DoctorCard } from '@/components/doctors/doctor-card';
+import { DoctorCardSkeleton } from '@/components/doctors/doctor-card-skeleton';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 interface Doctor {
-  id: string
-  fullName: string
-  degree: string
-  position: string[]
-  avatarUrl: string
+  id: string;
+  fullName: string;
+  degree: string;
+  position: string[];
+  avatarUrl: string;
+  portrait: string;
+  introduction: string;
   workLocations: Array<{
-    id: string
-    name: string
-    address: string
-  }>
+    id: string;
+    name: string;
+    address: string;
+  }>;
+  specialties: Array<{
+    id: string;
+    name: string;
+    slug: string;
+  }>;
 }
 
 interface ApiResponse {
-  success: boolean
-  data: Doctor[]
+  success: boolean;
+  data: Doctor[];
   meta: {
-    page: number
-    limit: number
-    total: number
-    hasNext: boolean
-    hasPrev: boolean
-    totalPages: number
-  }
+    page: number;
+    limit: number;
+    total: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+    totalPages: number;
+  };
 }
 
 export default function DoctorsPage() {
-  const [doctors, setDoctors] = useState<Doctor[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [searchTerm, setSearchTerm] = useState("")
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
   const [meta, setMeta] = useState({
     page: 1,
-    limit: 12,
+    limit: 10,
     total: 0,
     hasNext: false,
     hasPrev: false,
     totalPages: 1,
-  })
+  });
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        setLoading(true)
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
-        const url = new URL(`${baseUrl}/doctors/profile/public`)
-        url.searchParams.append("page", currentPage.toString())
-        url.searchParams.append("limit", "12") // changed limit from 20 to 12
+        setLoading(true);
+        const baseUrl =
+          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+        const url = new URL(`${baseUrl}/doctors/profile/public`);
+        url.searchParams.append('page', currentPage.toString());
+        url.searchParams.append('limit', '10');
 
         if (searchTerm) {
-          url.searchParams.append("search", searchTerm)
+          url.searchParams.append('search', searchTerm);
         }
 
-        const response = await fetch(url.toString())
+        const response = await fetch(url.toString());
         if (!response.ok) {
-          throw new Error("Failed to fetch doctors")
+          throw new Error('Failed to fetch doctors');
         }
 
-        const data: ApiResponse = await response.json()
-        setDoctors(data.data)
-        setMeta(data.meta)
-        setError(null)
+        const data: ApiResponse = await response.json();
+        setDoctors(data.data);
+        setMeta(data.meta);
+        setError(null);
       } catch (err) {
-        console.error("[v0] Error fetching doctors:", err)
-        setError(err instanceof Error ? err.message : "Failed to load doctors")
-        setDoctors([])
+        console.error('[v0] Error fetching doctors:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load doctors');
+        setDoctors([]);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchDoctors()
-  }, [currentPage, searchTerm])
+    fetchDoctors();
+  }, [currentPage, searchTerm]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value)
-    setCurrentPage(1)
-  }
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const stats = [
+    { icon: Users, label: 'Expert Doctors', value: '50+' },
+    { icon: Award, label: 'Years Experience', value: '15+' },
+    { icon: Shield, label: 'Patient Satisfaction', value: '99%' },
+    { icon: Clock, label: 'Available 24/7', value: 'Always' },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-
+    <div className='min-h-screen bg-white'>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] py-16 pt-32">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center text-white space-y-4">
-            <h1 className="text-5xl md:text-6xl font-bold">
+      <section className='pt-[100px] relative bg-linear-to-br from-[#0A2463] to-[#1e3a8a] pb-10 overflow-hidden'>
+        <div className='absolute inset-0 opacity-10'>
+          <div className='absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full' />
+          <div className='absolute bottom-20 right-20 w-24 h-24 border-2 border-white rounded-full' />
+          <div className='absolute top-1/2 left-1/4 w-2 h-2 bg-white rounded-full' />
+          <div className='absolute top-1/3 right-1/3 w-2 h-2 bg-white rounded-full' />
+        </div>
+
+        <div className='max-w-7xl mx-auto px-6 relative'>
+          <div className='text-center text-white space-y-6'>
+            <div className='inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-4'>
+              <Stethoscope className='w-4 h-4' />
+              <span className='text-sm font-medium'>World-Class Care</span>
+            </div>
+
+            <h1 className='text-5xl md:text-6xl font-bold leading-tight'>
               MEET OUR EXPERT
-              <span className="flex items-center justify-center gap-2 mt-2">
-                DOCTORS
-                <span className="text-red-500 text-4xl">+</span>
-              </span>
+              <span className='block text-blue-300'>DOCTORS</span>
             </h1>
-            <p className="text-blue-100 text-lg max-w-2xl mx-auto">
-              Our team of highly qualified and experienced doctors are dedicated to providing you with the best medical
-              care
+
+            <p className='text-blue-100 text-lg max-w-2xl mx-auto'>
+              Connect with top-tier medical professionals dedicated to providing
+              exceptional care and advanced treatments
             </p>
-            <div className="flex items-center gap-4 text-blue-200 font-semibold justify-center">
-              <span>{meta.total}+</span>
-              <span>Expert Doctors Available</span>
+
+            <div className='flex flex-wrap items-center justify-center gap-3 mt-8'>
+              <Badge
+                variant='secondary'
+                className='bg-white/20 text-white border-white/30 backdrop-blur-sm'
+              >
+                <Users className='w-3 h-3 mr-1' />
+                Top Specialists
+              </Badge>
+              <Badge
+                variant='secondary'
+                className='bg-white/20 text-white border-white/30 backdrop-blur-sm'
+              >
+                <Shield className='w-3 h-3 mr-1' />
+                Verified Profiles
+              </Badge>
+              <Badge
+                variant='secondary'
+                className='bg-white/20 text-white border-white/30 backdrop-blur-sm'
+              >
+                <Clock className='w-3 h-3 mr-1' />
+                Fast Booking
+              </Badge>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Search and Filter Section */}
-      <section className="max-w-7xl mx-auto px-6 py-12">
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="w-full md:w-96 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+      {/* Main Content */}
+      <section className='max-w-5xl mx-auto px-6 py-12'>
+        <div className='flex flex-col md:flex-row items-center justify-between gap-6 mb-8'>
+          <div>
+            <h2 className='text-3xl font-bold text-gray-900'>
+              All Specialists
+            </h2>
+            <p className='text-gray-500 mt-1'>
+              Found {meta.total} doctors matching your criteria
+            </p>
+          </div>
+
+          {/* Search Bar */}
+          <div className='w-full md:w-80 relative group'>
+            <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+              <Search className='h-4 w-4 text-gray-400 group-focus-within:text-blue-500 transition-colors' />
+            </div>
             <Input
-              placeholder="Search doctors by name, specialty..."
+              type='text'
+              placeholder='Search doctors...'
+              className='pl-10 bg-white border-gray-200 shadow-sm focus:border-blue-500'
               value={searchTerm}
               onChange={handleSearch}
-              className="pl-10 bg-white border-gray-300"
             />
           </div>
-          <div className="flex items-center gap-2 text-gray-600">
-            <span className="text-sm">
-              Showing {doctors.length} of {meta.total} doctors
-            </span>
-          </div>
         </div>
-      </section>
 
-      {/* Doctors Grid */}
-      <section className="max-w-7xl mx-auto px-6 pb-20">
         {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="text-center space-y-4">
-              <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mx-auto" />
-              <p className="text-gray-600">Loading doctors...</p>
-            </div>
+          <div className='space-y-6'>
+            {[1, 2, 3].map((i) => (
+              <DoctorCardSkeleton key={i} />
+            ))}
           </div>
         ) : error ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="text-center space-y-4">
-              <p className="text-red-600 font-semibold">Error loading doctors</p>
-              <p className="text-gray-600">{error}</p>
-              <Button onClick={() => window.location.reload()} className="bg-blue-500 hover:bg-blue-600 text-white">
-                Try Again
-              </Button>
-            </div>
-          </div>
-        ) : doctors.length === 0 ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="text-center space-y-4">
-              <p className="text-gray-600 text-lg">No doctors found</p>
-              <Button
-                onClick={() => {
-                  setSearchTerm("")
-                  setCurrentPage(1)
-                }}
-                className="bg-blue-500 hover:bg-blue-600 text-white"
-              >
-                Clear Search
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {" "}
-              {/* changed grid from 3 columns to 4 columns */}
-              {doctors.map((doctor) => (
-                <DoctorCard
-                  key={doctor.id}
-                  id={doctor.id}
-                  fullName={doctor.fullName}
-                  degree={doctor.degree}
-                  position={doctor.position}
-                  avatarUrl={doctor.avatarUrl}
-                  workLocations={doctor.workLocations}
-                />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            {meta.totalPages > 1 && (
-              <div className="flex items-center justify-center gap-4 mt-12">
-                <Button
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  disabled={!meta.hasPrev}
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </Button>
-
-                <div className="flex items-center gap-2">
-                  {Array.from({ length: meta.totalPages }, (_, i) => i + 1).map((page) => (
-                    <Button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      variant={currentPage === page ? "default" : "outline"}
-                      size="sm"
-                      className={currentPage === page ? "bg-blue-500 hover:bg-blue-600 text-white" : ""}
-                    >
-                      {page}
-                    </Button>
-                  ))}
-                </div>
-
-                <Button
-                  onClick={() => setCurrentPage((p) => Math.min(meta.totalPages, p + 1))}
-                  disabled={!meta.hasNext}
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-              </div>
-            )}
-          </>
-        )}
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-blue-500 py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between">
-            <div className="text-white">
-              <h3 className="text-3xl font-bold mb-2">Need an Appointment?</h3>
-              <p className="text-blue-100">Book a consultation with any of our expert doctors today</p>
-            </div>
-            <Button size="lg" className="bg-white text-blue-500 hover:bg-gray-100">
-              Book Now
+          <div className='text-center py-20 bg-red-50 rounded-xl'>
+            <p className='text-red-600 font-medium mb-2'>
+              Unavailable to load data
+            </p>
+            <p className='text-sm text-red-500 mb-6'>{error}</p>
+            <Button
+              onClick={() => window.location.reload()}
+              variant='outline'
+              className='border-red-200 text-red-700 hover:bg-red-100 hover:text-red-900'
+            >
+              Retry
             </Button>
           </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] text-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <div className="w-4 h-4 bg-blue-600 rounded-full" />
-              </div>
-              <span className="font-bold text-xl">Medic</span>
+        ) : doctors.length === 0 ? (
+          <div className='text-center py-24 bg-gray-50 rounded-xl border border-dashed border-gray-200'>
+            <div className='w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4'>
+              <Search className='w-6 h-6 text-gray-400' />
             </div>
-            <p className="text-blue-200 text-sm">© 2025 Medic. All rights reserved.</p>
+            <p className='text-gray-900 font-medium text-lg'>
+              No doctors found
+            </p>
+            <p className='text-gray-500 mt-1'>
+              Try adjusting your search terms
+            </p>
           </div>
-        </div>
-      </footer>
+        ) : (
+          <div className='space-y-6'>
+            {doctors.map((doctor) => (
+              <DoctorCard
+                key={doctor.id}
+                id={doctor.id}
+                fullName={doctor.fullName}
+                degree={doctor.degree}
+                position={doctor.position}
+                avatarUrl={doctor.avatarUrl}
+                portrait={doctor.portrait}
+                workLocations={doctor.workLocations}
+                specialties={doctor.specialties}
+                introduction={doctor.introduction}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {!loading && meta.totalPages > 1 && (
+          <div className='flex justify-center mt-12'>
+            <div className='flex items-center gap-2 bg-white border border-gray-200 rounded-lg p-1 shadow-sm'>
+              <Button
+                variant='ghost'
+                size='icon'
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={!meta.hasPrev}
+                className='h-9 w-9 text-gray-500 hover:text-gray-900'
+              >
+                <ChevronLeft className='w-4 h-4' />
+              </Button>
+
+              <span className='text-sm font-medium text-gray-700 px-4'>
+                Page {currentPage} of {meta.totalPages}
+              </span>
+
+              <Button
+                variant='ghost'
+                size='icon'
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(meta.totalPages, p + 1))
+                }
+                disabled={!meta.hasNext}
+                className='h-9 w-9 text-gray-500 hover:text-gray-900'
+              >
+                <ChevronRight className='w-4 h-4' />
+              </Button>
+            </div>
+          </div>
+        )}
+      </section>
     </div>
-  )
+  );
 }

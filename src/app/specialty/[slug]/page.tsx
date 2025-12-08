@@ -17,7 +17,6 @@ import { DoctorCard } from '@/components/doctors/doctor-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 
 interface SpecialtyDetail {
   id: string;
@@ -57,8 +56,10 @@ async function getSpecialtyDetail(slug: string): Promise<SpecialtyDetail> {
   const res = await fetch(`${baseUrl}/specialties/public/${slug}`, {
     next: { revalidate: 0 },
   });
-  if (!res.ok) throw new Error('Failed to fetch specialty');
   const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.message || 'Failed to fetch specialty');
+  }
   return data.data;
 }
 
@@ -70,8 +71,8 @@ async function getDoctorsBySpecialty(specialtyId: string): Promise<Doctor[]> {
       next: { revalidate: 0 },
     }
   );
-  if (!res.ok) throw new Error('Failed to fetch doctors');
   const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch doctors');
   return data.data || [];
 }
 
@@ -255,6 +256,7 @@ async function SpecialtyContent({ slug }: { slug: string }) {
       </div>
     );
   } catch (error) {
+    console.log(error);
     return (
       <div className='min-h-screen pt-[68px] flex items-center justify-center'>
         <Card className='max-w-md mx-auto'>
@@ -264,8 +266,9 @@ async function SpecialtyContent({ slug }: { slug: string }) {
               Specialty Not Found
             </h2>
             <p className='text-gray-600 dark:text-gray-400 mb-6'>
-              The specialty you're looking for doesn't exist or has been
-              removed.
+              {error instanceof Error
+                ? error.message
+                : "The specialty you're looking for doesn't exist or has been removed."}
             </p>
             <Link href='/specialities'>
               <Button>Back to Specialties</Button>

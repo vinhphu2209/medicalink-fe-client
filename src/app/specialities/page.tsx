@@ -35,9 +35,9 @@ export default async function SpecialtiesPage() {
   ];
 
   return (
-    <div className='min-h-screen pt-[68px]'>
+    <div className='min-h-screen'>
       {/* Hero Section */}
-      <section className='relative bg-linear-to-br from-[#0A2463] to-[#1e3a8a] py-20 overflow-hidden'>
+      <section className='relative bg-linear-to-br from-[#0A2463] to-[#1e3a8a] pt-[100px] pb-10 overflow-hidden'>
         <div className='absolute inset-0 opacity-10'>
           <div className='absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full' />
           <div className='absolute bottom-20 right-20 w-24 h-24 border-2 border-white rounded-full' />
@@ -96,33 +96,8 @@ export default async function SpecialtiesPage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className='bg-white dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-800'>
-        <div className='max-w-7xl mx-auto px-6 py-12'>
-          <div className='grid grid-cols-2 md:grid-cols-4 gap-6'>
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={index}
-                  className='text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-neutral-800 dark:to-neutral-700 border border-blue-200 dark:border-neutral-600'
-                >
-                  <Icon className='w-8 h-8 mx-auto mb-3 text-blue-600 dark:text-blue-400' />
-                  <div className='text-3xl font-bold text-gray-900 dark:text-white mb-1'>
-                    {stat.value}
-                  </div>
-                  <div className='text-sm text-gray-600 dark:text-gray-300'>
-                    {stat.label}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Specialties List Section */}
-      <section className='max-w-7xl mx-auto px-6 py-20'>
+      <section className='max-w-7xl mx-auto px-6 py-12'>
         <div className='text-center mb-12'>
           <h2 className='text-4xl font-bold mb-4 text-gray-900 dark:text-white'>
             Explore Our Specialties

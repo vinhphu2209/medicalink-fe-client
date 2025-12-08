@@ -31,7 +31,7 @@ export default function SpecialtyCard({ specialty }: { specialty: any }) {
           <div className='relative h-36 bg-linear-to-br from-blue-50 via-blue-100 to-indigo-100 dark:from-neutral-800 dark:via-neutral-700 dark:to-neutral-800 overflow-hidden'>
             <div className='absolute inset-0 bg-linear-to-t from-blue-600/10 to-transparent' />
             <div className='absolute inset-0 flex items-center justify-center'>
-              <div className='relative w-24 h-24 overflow-hidden rounded-2xl shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300'>
+              <div className='relative w-24 h-24 overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-300'>
                 {iconUrl ? (
                   <Image
                     src={iconUrl}
