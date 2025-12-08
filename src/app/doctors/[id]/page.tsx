@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, use } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, AlertCircle, Loader2, ChevronDown } from "lucide-react"
@@ -8,7 +8,6 @@ import { ReviewForm } from "@/components/doctors/review-form"
 
 interface DoctorDetail {
     id: string
-    profileId: string
     fullName: string
     degree: string
     position: string[]
@@ -32,8 +31,7 @@ interface DoctorDetail {
     experience: string[]
 }
 
-export default function DoctorDetailPage({ params }: { params: Promise<{ id: string }> }) {
-    const resolvedParams = use(params)
+export default function DoctorDetailPage({ params }: { params: { id: string } }) {
     const [doctor, setDoctor] = useState<DoctorDetail | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -52,7 +50,7 @@ export default function DoctorDetailPage({ params }: { params: Promise<{ id: str
                 }
 
                 const data = await response.json()
-                const doctorData = data.data.find((d: DoctorDetail) => d.profileId === resolvedParams.id)
+                const doctorData = data.data.find((d: DoctorDetail) => d.id === params.id)
 
                 if (!doctorData) {
                     throw new Error("Doctor not found")
@@ -68,7 +66,7 @@ export default function DoctorDetailPage({ params }: { params: Promise<{ id: str
         }
 
         fetchDoctor()
-    }, [resolvedParams.id])
+    }, [params.id])
 
     if (loading) {
         return (
@@ -347,7 +345,7 @@ export default function DoctorDetailPage({ params }: { params: Promise<{ id: str
                 {activeTab === "reviews" && (
                     <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
                         <h2 className="text-2xl font-bold text-gray-900 mb-6">Patient Reviews</h2>
-                        <ReviewForm doctorId={doctor.profileId} />
+                        <ReviewForm doctorId={doctor.id} />
                     </div>
                 )}
             </div>
