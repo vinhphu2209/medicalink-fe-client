@@ -40,14 +40,20 @@ export default function AppointmentsPage() {
         setCurrentStep(4)
     }
 
+    const handleBack = () => {
+        if (currentStep > 1) {
+            setCurrentStep(currentStep - 1)
+        }
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-32 pb-16">
             <div className="max-w-4xl mx-auto px-4">
                 {/* Step Indicator */}
                 <div className="mb-12">
-                    <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center justify-center mb-8">
                         {[1, 2, 3].map((step) => (
-                            <div key={step} className="flex items-center flex-1">
+                            <div key={step} className="flex items-center">
                                 <div
                                     className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white transition-all ${step <= currentStep ? "bg-blue-600" : "bg-gray-300"
                                         }`}
@@ -56,7 +62,7 @@ export default function AppointmentsPage() {
                                 </div>
                                 {step < 3 && (
                                     <div
-                                        className={`flex-1 h-1 mx-4 transition-all ${step < currentStep ? "bg-blue-600" : "bg-gray-300"}`}
+                                        className={`w-8 h-1 mx-2 transition-all ${step < currentStep ? "bg-blue-600" : "bg-gray-300"}`}
                                     />
                                 )}
                             </div>
@@ -73,9 +79,15 @@ export default function AppointmentsPage() {
 
                 {/* Steps */}
                 <div className="bg-white rounded-lg shadow-lg p-8">
-                    {currentStep === 1 && <StepOne onComplete={handleStepOneComplete} />}
-                    {currentStep === 2 && <StepTwo onComplete={handleStepTwoComplete} bookingData={bookingData} />}
-                    {currentStep === 3 && <StepThree onComplete={handleStepThreeComplete} bookingData={bookingData} />}
+                    {currentStep === 1 && (
+                        <StepOne onComplete={handleStepOneComplete} onBack={currentStep > 1 ? handleBack : undefined} />
+                    )}
+                    {currentStep === 2 && (
+                        <StepTwo onComplete={handleStepTwoComplete} bookingData={bookingData} onBack={handleBack} />
+                    )}
+                    {currentStep === 3 && (
+                        <StepThree onComplete={handleStepThreeComplete} bookingData={bookingData} onBack={handleBack} />
+                    )}
                     {currentStep === 4 && (
                         <div className="text-center py-8">
                             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
