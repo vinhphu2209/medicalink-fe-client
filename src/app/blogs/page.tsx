@@ -2,91 +2,106 @@
 
 import { useEffect, useState } from 'react';
 
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
+import { ChevronRight, Search, Sparkles, X } from 'lucide-react';
+
+import { blogApi } from '@/api/blogs';
 import { BlogCard } from '@/components/blog-card';
+import { PaginatedNavigation } from '@/components/shared/paginated-navigation';
 import { Button } from '@/components/ui/button';
-
-interface Blog {
-  id: string;
-  title: string;
-  slug: string;
-  thumbnailUrl: string;
-  authorId: string;
-  category: {
-    id: string;
-    name: string;
-    slug: string;
-  };
-  status: string;
-  publishedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-  publicIds: string[];
-  authorName: string;
-}
-
-interface ApiResponse {
-  success: boolean;
-  data: Blog[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-    hasNext: boolean;
-    hasPrev: boolean;
-  };
-}
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useDebounce } from '@/hooks/use-debounce';
+import type { Blog, BlogCategory, PaginationMeta } from '@/types/blog';
 
 export default function BlogsPage() {
+  const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get('category');
+  // Data State
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [categories, setCategories] = useState<BlogCategory[]>([]);
+
+  // Loading & Error State
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Filter & Sort State
+  const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 500);
+
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('createdAt');
+  const [sortOrder, setSortOrder] = useState<'ASC' | 'DESC'>('DESC');
   const [currentPage, setCurrentPage] = useState(1);
-  const [meta, setMeta] = useState({
+
+  // Pagination Meta
+  const [meta, setMeta] = useState<PaginationMeta>({
     page: 1,
-    limit: 2,
+    limit: 6,
     total: 0,
     hasNext: false,
     hasPrev: false,
     totalPages: 1,
   });
 
+  // Fetch Categories on Mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await blogApi.getCategories();
+        setCategories(data);
+      } catch (err) {
+        console.error('Failed to fetch categories:', err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Initialize category filter from URL
+  useEffect(() => {
+    if (categoryFromUrl && categories.length > 0) {
+      // Check if the category from URL exists
+      const categoryExists = categories.some(
+        (cat) => cat.slug === categoryFromUrl
+      );
+      if (categoryExists) {
+        setSelectedCategory(categoryFromUrl);
+      }
+    }
+  }, [categoryFromUrl, categories]);
+
+  // Fetch Blogs when params change
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-
-        // Base URL (đặt trong .env hoặc fallback)
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-        // Endpoint chính xác
-        const url = new URL(`${baseUrl}/blogs/public`);
-
-        // Thêm các query params
-        url.searchParams.append('sortBy', 'createdAt');
-        url.searchParams.append('sortOrder', 'DESC');
-        url.searchParams.append('page', currentPage.toString());
-        url.searchParams.append('limit', '5'); // tuỳ bạn muốn giới hạn bao nhiêu
-
-        // Gọi API
-        const response = await fetch(url.toString());
-        if (!response.ok) {
-          throw new Error('Failed to fetch blogs');
-        }
-
-        // Parse JSON
-        const data: ApiResponse = await response.json();
-
-        // Set data vào state
-        // (Không cần filter status vì API `/public` chỉ trả blog đã PUBLISHED)
-        setBlogs(data.data);
-        setMeta(data.meta);
         setError(null);
-      } catch (err) {
-        console.error('[v0] Error fetching blogs:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load blogs');
+
+        const params = {
+          page: currentPage,
+          limit: 6, // Fixed limit or make it dynamic if needed
+          sortBy,
+          sortOrder,
+          categorySlug:
+            selectedCategory === 'all' ? undefined : selectedCategory,
+          search: debouncedSearch || undefined,
+        };
+
+        const response = await blogApi.getPublicBlogs(params);
+
+        setBlogs(response.data);
+        setMeta(response.meta);
+      } catch (err: any) {
+        // eslint-disable-next-line no-console
+        console.error('Error fetching blogs:', err);
+        setError(err.message || 'Failed to load blogs');
         setBlogs([]);
       } finally {
         setLoading(false);
@@ -94,15 +109,23 @@ export default function BlogsPage() {
     };
 
     fetchBlogs();
-  }, [currentPage]);
+  }, [currentPage, debouncedSearch, selectedCategory, sortBy, sortOrder]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch, selectedCategory, sortBy, sortOrder]);
+
+  // Handlers
+  const handleClearSearch = () => setSearch('');
 
   return (
-    <div className='min-h-screen bg-gray-50'>
+    <div className='min-h-screen'>
       {/* Hero Section */}
-      <section className='relative bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] pt-[120px] pb-10'>
+      <section className='relative pt-[80px] bg-linear-to-br from-[#0A2463] to-[#1e3a8a] pt-[120px] pb-6'>
         <div className='max-w-7xl mx-auto px-6'>
           <div className='text-center text-white space-y-4'>
-            <h1 className='text-5xl md:text-6xl font-bold'>
+            <h1 className='text-4xl md:text-5xl font-bold'>
               LATEST MEDICAL
               <span className='flex items-center justify-center gap-2 mt-2'>
                 NEWS & BLOGS
@@ -113,16 +136,71 @@ export default function BlogsPage() {
               Stay informed with the latest medical news, health tips, and
               expert insights from our healthcare professionals
             </p>
-            <div className='flex items-center gap-4 text-blue-200 font-semibold justify-center'>
-              <span>{meta.total}+</span>
-              <span>Articles Published</span>
+          </div>
+          {/* Filters */}
+          <div className='flex flex-col md:flex-row gap-4 mt-6 items-center justify-between **:text-white bg-white/10 p-4 rounded-xl shadow-sm'>
+            <div className='relative w-full md:w-96'>
+              <Search className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4' />
+              <Input
+                placeholder='Search articles...'
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className='pl-9 pr-8 placeholder:text-gray-50 focus-visible:border-sky-500 focus-visible:ring-sky-500/20 '
+              />
+              {search && (
+                <button
+                  onClick={handleClearSearch}
+                  className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600'
+                >
+                  <X className='w-4 h-4' />
+                </button>
+              )}
+            </div>
+
+            <div className='flex flex-wrap items-center gap-3 w-full md:w-auto'>
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
+                <SelectTrigger className='w-[180px]'>
+                  <SelectValue placeholder='All Categories' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='all'>All Categories</SelectItem>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.slug}>
+                      {cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select
+                value={`${sortBy}-${sortOrder}`}
+                onValueChange={(val) => {
+                  const [field, order] = val.split('-');
+                  setSortBy(field);
+                  setSortOrder(order as 'ASC' | 'DESC');
+                }}
+              >
+                <SelectTrigger className='w-[180px]'>
+                  <SelectValue placeholder='Sort By' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='createdAt-DESC'>Newest First</SelectItem>
+                  <SelectItem value='createdAt-ASC'>Oldest First</SelectItem>
+                  <SelectItem value='title-ASC'>A-Z</SelectItem>
+                  <SelectItem value='title-DESC'>Z-A</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Blogs Grid */}
-      <section className='max-w-7xl mx-auto px-6 py-20'>
+      {/* Content Section */}
+      <section className='max-w-7xl mx-auto px-6 py-10'>
+        {/* Blogs Grid or Status */}
         {loading ? (
           <div className='flex items-center justify-center py-20'>
             <div className='text-center space-y-4'>
@@ -146,12 +224,18 @@ export default function BlogsPage() {
         ) : blogs.length === 0 ? (
           <div className='flex items-center justify-center py-20'>
             <div className='text-center space-y-4'>
-              <p className='text-gray-600 text-lg'>No blogs found</p>
+              <p className='text-gray-600 text-lg'>
+                No blogs found matching your criteria
+              </p>
               <Button
-                onClick={() => setCurrentPage(1)}
+                onClick={() => {
+                  setSearch('');
+                  setSelectedCategory('all');
+                  setCurrentPage(1);
+                }}
                 className='bg-blue-500 hover:bg-blue-600 text-white'
               >
-                Go to First Page
+                Clear Filters
               </Button>
             </div>
           </div>
@@ -165,93 +249,19 @@ export default function BlogsPage() {
 
             {/* Pagination */}
             {meta.totalPages > 1 && (
-              <div className='flex items-center justify-center gap-4 mt-12'>
-                <Button
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  disabled={!meta.hasPrev}
-                  variant='outline'
-                  size='icon'
-                  className='rounded-full'
-                >
-                  <ChevronLeft className='w-4 h-4' />
-                </Button>
-
-                <div className='flex items-center gap-2'>
-                  {Array.from({ length: meta.totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <Button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        variant={currentPage === page ? 'default' : 'outline'}
-                        size='sm'
-                        className={
-                          currentPage === page
-                            ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                            : ''
-                        }
-                      >
-                        {page}
-                      </Button>
-                    )
-                  )}
-                </div>
-
-                <Button
-                  onClick={() =>
-                    setCurrentPage((p) => Math.min(meta.totalPages, p + 1))
-                  }
-                  disabled={!meta.hasNext}
-                  variant='outline'
-                  size='icon'
-                  className='rounded-full'
-                >
-                  <ChevronRight className='w-4 h-4' />
-                </Button>
+              <div className='mt-12'>
+                <PaginatedNavigation
+                  currentPage={currentPage}
+                  totalPages={meta.totalPages}
+                  onPageChange={setCurrentPage}
+                  hasNext={meta.hasNext}
+                  hasPrev={meta.hasPrev}
+                />
               </div>
             )}
           </>
         )}
       </section>
-
-      {/* CTA Section */}
-      <section className='bg-blue-500 py-12'>
-        <div className='max-w-7xl mx-auto px-6'>
-          <div className='flex items-center justify-between'>
-            <div className='text-white'>
-              <h3 className='text-3xl font-bold mb-2'>
-                Subscribe to Our Newsletter
-              </h3>
-              <p className='text-blue-100'>
-                Get the latest medical news and health tips delivered to your
-                inbox
-              </p>
-            </div>
-            <Button
-              size='lg'
-              className='bg-white text-blue-500 hover:bg-gray-100'
-            >
-              Subscribe
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className='bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] text-white py-12'>
-        <div className='max-w-7xl mx-auto px-6'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center gap-2'>
-              <div className='w-8 h-8 bg-white rounded-full flex items-center justify-center'>
-                <div className='w-4 h-4 bg-blue-600 rounded-full' />
-              </div>
-              <span className='font-bold text-xl'>Medic</span>
-            </div>
-            <p className='text-blue-200 text-sm'>
-              © 2025 Medic. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

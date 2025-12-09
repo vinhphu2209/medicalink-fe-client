@@ -46,7 +46,7 @@
   --color-primary-foreground: #ffffff;
   --color-secondary: #0a2463;
   --color-secondary-foreground: #ffffff;
-  --color-accent: #60a5fa;
+  --color-accent: #a2cafc;
   --color-accent-foreground: #0a0a0a;
   --color-muted: #f1f5f9;
   --color-muted-foreground: #64748b;
@@ -121,4 +121,24 @@ html {
   display: flex;
   width: max-content;
   animation: scrollLoop 40s linear infinite;
+}
+
+li {
+  @apply list-inside list-disc pl-4;
+}
+
+ol {
+  @apply list-inside list-decimal pl-4;
+}
+
+.ql-align-center {
+  @apply text-center;
+}
+
+.ql-align-right {
+  @apply text-right;
+}
+
+.ql-align-left {
+  @apply text-left;
 }

@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
 import { Analytics } from '@vercel/analytics/next';
+import 'react-quill-new/dist/quill.snow.css';
 
+import { Footer } from '@/components/shared/footer';
 import { Navbar } from '@/components/shared/navbar';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -41,6 +43,7 @@ export default function RootLayout({
 
         <Navbar />
         {children}
+        <Footer />
         <Analytics />
         <Toaster duration={5000} richColors />
       </body>

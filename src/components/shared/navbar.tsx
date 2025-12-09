@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 
 const BookAppointmentButton = () => {
   return (
-    <Link href='/book-appointment'>
+    <Link href='/appointments'>
       <Button className='group rounded-sm bg-transparent bg-linear-to-r from-sky-500 via-sky-500/60 to-sky-500 bg-size-[200%_auto] text-white hover:bg-transparent hover:bg-position-[99%_center] focus-visible:ring-sky-500/20 dark:from-sky-400 dark:via-sky-400/60 dark:to-sky-400 dark:focus-visible:ring-sky-400/40 cursor-pointer shadow-md shadow-sky-300/10 hover:shadow-sky-300/30'>
         Book Appointment
         <ArrowRight className='w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-300' />
@@ -83,11 +83,7 @@ export function Navbar() {
 
         {/* Desktop Appointment Button */}
         <div className='hidden md:block'>
-          <Link href='/appointments'>
-            <Button className='bg-blue-500 hover:bg-blue-600 text-white'>
-              Appointment
-            </Button>
-          </Link>
+          <BookAppointmentButton />
         </div>
 
         {/* Mobile Menu Button */}

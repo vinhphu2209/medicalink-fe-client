@@ -1,22 +1,70 @@
+import { Suspense } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
-import {
-  ArrowRight,
-  Calendar,
-  CheckCircle2,
-  ChevronLeft,
-  ChevronRight,
-  Mail,
-  MapPin,
-  Phone,
-  Star,
-} from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
+import { BlogsSection } from '@/components/home/blogs-section';
+import { DoctorsSection } from '@/components/home/doctors-section';
+import { SpecialtiesScrollLoop } from '@/components/home/specialties-scroll-loop';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 import { LocationsSection } from '@/components/work-locations/locations-section';
+
+// Fallback loading components
+function DoctorsSectionSkeleton() {
+  return (
+    <section className='py-20'>
+      <div className='max-w-7xl mx-auto px-6'>
+        <div className='flex items-center justify-between mb-12'>
+          <div>
+            <Skeleton className='h-10 w-80 mb-2' />
+            <Skeleton className='h-5 w-96' />
+          </div>
+          <Skeleton className='h-10 w-40' />
+        </div>
+        <div className='grid md:grid-cols-2 gap-6'>
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className='h-48' />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BlogsSectionSkeleton() {
+  return (
+    <section className='py-20'>
+      <div className='max-w-7xl mx-auto px-6'>
+        <div className='flex items-center justify-between mb-12'>
+          <div>
+            <Skeleton className='h-10 w-80 mb-2' />
+            <Skeleton className='h-5 w-96' />
+          </div>
+          <Skeleton className='h-10 w-32' />
+        </div>
+        <div className='grid md:grid-cols-3 gap-8'>
+          {[1, 2, 3].map((i) => (
+            <Skeleton key={i} className='h-96' />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SpecialtiesSkeleton() {
+  return (
+    <div className='w-full bg-linear-to-r from-blue-600 to-blue-700 py-6 overflow-hidden mt-auto'>
+      <div className='max-w-7xl mx-auto px-6'>
+        <Skeleton className='h-6 w-full' />
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -56,7 +104,7 @@ export default function Home() {
               </p>
 
               <div className='flex flex-wrap gap-4'>
-                <Link href='/book-appointment'>
+                <Link href='/appointments'>
                   <Button
                     size='lg'
                     className='bg-blue-500 hover:bg-blue-600 text-white'
@@ -123,74 +171,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Meet Our Best Doctors */}
-      <section className='py-20'>
-        <div className='max-w-7xl mx-auto px-6'>
-          <div className='flex items-center justify-between mb-12'>
-            <div>
-              <h2 className='text-4xl font-bold mb-2'>MEET OUR BEST DOCTORS</h2>
-              <p className='text-gray-600'>
-                Experienced professionals dedicated to your health
-              </p>
-            </div>
-            <div className='flex items-center gap-4 text-blue-500 font-semibold'>
-              <span>58+</span>
-              <span className='text-gray-400'>Our Expert Doctors</span>
-            </div>
-          </div>
-
-          <div className='grid md:grid-cols-3 gap-8'>
-            {[
-              { name: 'Beverly Little', role: 'General Surgeon', rating: 4.9 },
-              { name: 'Anas El-Masry', role: 'Cardiologist', rating: 5.0 },
-              { name: 'Free Doe', role: 'Neurologist', rating: 4.8 },
-            ].map((doctor, index) => (
-              <Card
-                key={index}
-                className='overflow-hidden hover:shadow-xl transition-shadow'
-              >
-                <div className='relative h-80 bg-linear-to-b from-blue-50 to-white'>
-                  <Image
-                    unoptimized
-                    src={`https://placehold.co/600x400?text=Doctor-Image`}
-                    alt={doctor.name}
-                    width={300}
-                    height={320}
-                    className='w-full h-full object-cover'
-                  />
-                </div>
-                <div className='p-6 text-center'>
-                  <h3 className='font-bold text-lg mb-1'>{doctor.name}</h3>
-                  <p className='text-gray-600 text-sm mb-3'>{doctor.role}</p>
-                  <div className='flex items-center justify-center gap-1 text-yellow-500'>
-                    <Star className='w-4 h-4 fill-current' />
-                    <span className='text-sm font-semibold text-gray-700'>
-                      {doctor.rating}
-                    </span>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          <div className='flex justify-center gap-2 mt-8'>
-            <Button
-              variant='outline'
-              size='icon'
-              className='rounded-full bg-transparent'
-            >
-              <ChevronLeft className='w-4 h-4' />
-            </Button>
-            <Button
-              variant='outline'
-              size='icon'
-              className='rounded-full bg-transparent'
-            >
-              <ChevronRight className='w-4 h-4' />
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Meet Our Best Doctors - With Suspense */}
+      <Suspense fallback={<DoctorsSectionSkeleton />}>
+        <DoctorsSection />
+      </Suspense>
 
       {/* Our Clinics */}
       <LocationsSection />
@@ -275,303 +259,16 @@ export default function Home() {
           </div>
         </div>
 
-        <div className='w-full bg-linear-to-r from-blue-600 to-blue-700 py-6 overflow-hidden mt-auto'>
-          <div className='max-w-7xl mx-auto px-6'>
-            <div className='flex items-center gap-8 text-white animate-scroll-loop'>
-              {[
-                'CARDIOLOGIST',
-                'NEUROLOGIST',
-                'GYNECOLOGIST',
-                'PEDIATRICIAN',
-                'DERMATOLOGIST',
-                'ORTHOPEDIST',
-                'PSYCHIATRIST',
-                'UROLOGIST',
-                'ENDOCRINOLOGIST',
-                'PULMONOLOGIST',
-                'GASTROENTEROLOGIST',
-                'OPHTHALMOLOGIST',
-                'DENTIST',
-                'ONCOLOGIST',
-                'NEPHROLOGIST',
-                'RHEUMATOLOGIST',
-                'RADIOLOGIST',
-                'PATHOLOGIST',
-                'HEMATOLOGIST',
-                'IMMUNOLOGIST',
-                'ANESTHESIOLOGIST',
-                'OTOLARYNGOLOGIST',
-                'PLASTIC SURGEON',
-                'VASCULAR SURGEON',
-              ].map((spec, i) => (
-                <div
-                  key={i}
-                  className='flex items-center gap-2 whitespace-nowrap'
-                >
-                  <span className='text-xl'>✦</span>
-                  <span className='font-semibold'>{spec}</span>
-                </div>
-              ))}
-
-              {[
-                'CARDIOLOGIST',
-                'NEUROLOGIST',
-                'GYNECOLOGIST',
-                'PEDIATRICIAN',
-                'DERMATOLOGIST',
-                'ORTHOPEDIST',
-                'PSYCHIATRIST',
-                'UROLOGIST',
-                'ENDOCRINOLOGIST',
-                'PULMONOLOGIST',
-                'GASTROENTEROLOGIST',
-                'OPHTHALMOLOGIST',
-                'DENTIST',
-                'ONCOLOGIST',
-                'NEPHROLOGIST',
-                'RHEUMATOLOGIST',
-                'RADIOLOGIST',
-                'PATHOLOGIST',
-                'HEMATOLOGIST',
-                'IMMUNOLOGIST',
-                'ANESTHESIOLOGIST',
-                'OTOLARYNGOLOGIST',
-                'PLASTIC SURGEON',
-                'VASCULAR SURGEON',
-              ].map((spec, i) => (
-                <div
-                  key={i + 100}
-                  className='flex items-center gap-2 whitespace-nowrap'
-                >
-                  <span className='text-xl'>✦</span>
-                  <span className='font-semibold'>{spec}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* Specialties Scroll Loop - With Suspense */}
+        <Suspense fallback={<SpecialtiesSkeleton />}>
+          <SpecialtiesScrollLoop />
+        </Suspense>
       </section>
 
-      {/* Make Appointment */}
-      <section className='py-20 bg-linear-to-br from-[#0A2463] to-[#1e3a8a]'>
-        <div className='max-w-7xl mx-auto px-6'>
-          <div className='grid md:grid-cols-2 gap-12 items-center'>
-            <div className='relative'>
-              <Image
-                src='/images/general-service.png'
-                alt='Patient Care'
-                width={500}
-                height={500}
-                className='rounded-2xl w-full h-auto'
-              />
-            </div>
-
-            <div className='space-y-6'>
-              <div>
-                <h2 className='text-4xl font-bold mb-2 text-white'>
-                  MAKE APPOINTMENT
-                </h2>
-                <p className='text-gray-200'>
-                  Make an Online Appointment Booking For Treatment Patients
-                </p>
-              </div>
-
-              <div className='grid grid-cols-2 gap-4'>
-                <Input placeholder='First Name' className='bg-white' />
-                <Input placeholder='Last Name' className='bg-white' />
-                <Input
-                  placeholder='Email Address'
-                  type='email'
-                  className='bg-white'
-                />
-                <Input
-                  placeholder='Phone Number'
-                  type='tel'
-                  className='bg-white'
-                />
-                <Input placeholder='Date' type='date' className='bg-white' />
-                <Input placeholder='Time' type='time' className='bg-white' />
-              </div>
-
-              <Input placeholder='Your Message' className='bg-white' />
-
-              <Button
-                className='w-full bg-blue-500 hover:bg-blue-600 text-white'
-                size='lg'
-              >
-                Book Now
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Latest Blog */}
-      <section className='py-20'>
-        <div className='max-w-7xl mx-auto px-6'>
-          <div className='flex items-center justify-between mb-12'>
-            <div>
-              <h2 className='text-4xl font-bold mb-2'>READ OUR LATEST BLOG</h2>
-              <p className='text-gray-600'>
-                Stay updated with healthcare news and tips
-              </p>
-            </div>
-            <Button className='bg-blue-500 hover:bg-blue-600 text-white'>
-              View All
-            </Button>
-          </div>
-
-          <div className='grid md:grid-cols-3 gap-8'>
-            {[
-              {
-                title: 'How to maintain healthy lifestyle',
-                date: 'Dec 15, 2024',
-              },
-              {
-                title: 'Understanding heart health basics',
-                date: 'Dec 12, 2024',
-              },
-              {
-                title: 'Tips for better mental wellness',
-                date: 'Dec 10, 2024',
-              },
-            ].map((post, index) => (
-              <Card
-                key={index}
-                className='overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group'
-              >
-                <div className='relative h-48'>
-                  <Image
-                    unoptimized
-                    src={`https://placehold.co/600x400?text=Hello+World`}
-                    alt={post.title}
-                    width={400}
-                    height={200}
-                    className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300'
-                  />
-                </div>
-                <div className='p-6'>
-                  <div className='text-sm text-gray-500 mb-2'>{post.date}</div>
-                  <h3 className='font-semibold text-lg mb-3'>{post.title}</h3>
-                  <Button variant='link' className='text-blue-500 p-0'>
-                    Read More <ArrowRight className='w-4 h-4 ml-1' />
-                  </Button>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className='bg-linear-to-br from-[#0A2463] to-[#1e3a8a] text-white py-16'>
-        <div className='max-w-7xl mx-auto px-6'>
-          <div className='grid md:grid-cols-5 gap-8 mb-12'>
-            <div className='md:col-span-2'>
-              <div className='flex items-center gap-2 mb-4'>
-                <div className='w-8 h-8 bg-white rounded-full flex items-center justify-center'>
-                  <div className='w-4 h-4 bg-blue-600 rounded-full' />
-                </div>
-                <span className='font-bold text-xl'>Medic</span>
-              </div>
-              <p className='text-blue-200 mb-4'>
-                Providing quality healthcare services with experienced doctors
-                and modern facilities since 2007.
-              </p>
-              <div className='flex gap-3'>
-                <div className='w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 cursor-pointer'>
-                  f
-                </div>
-                <div className='w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 cursor-pointer'>
-                  t
-                </div>
-                <div className='w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 cursor-pointer'>
-                  in
-                </div>
-                <div className='w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 cursor-pointer'>
-                  ig
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h4 className='font-semibold mb-4'>Company</h4>
-              <ul className='space-y-2 text-blue-200'>
-                <li>
-                  <Link href='/about-us' className='hover:text-white'>
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link href='/doctors' className='hover:text-white'>
-                    Doctors
-                  </Link>
-                </li>
-                <li>
-                  <Link href='/news' className='hover:text-white'>
-                    News
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className='font-semibold mb-4'>Useful Links</h4>
-              <ul className='space-y-2 text-blue-200'>
-                <li>
-                  <Link href='#' className='hover:text-white'>
-                    FAQ
-                  </Link>
-                </li>
-                <li>
-                  <Link href='#' className='hover:text-white'>
-                    Privacy
-                  </Link>
-                </li>
-                <li>
-                  <Link href='#' className='hover:text-white'>
-                    Terms
-                  </Link>
-                </li>
-                <li>
-                  <Link href='#' className='hover:text-white'>
-                    Support
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className='font-semibold mb-4'>Contact</h4>
-              <ul className='space-y-3 text-blue-200'>
-                <li className='flex items-start gap-2'>
-                  <Phone className='w-4 h-4 mt-1 shrink-0' />
-                  <span>+1 234 567 890</span>
-                </li>
-                <li className='flex items-start gap-2'>
-                  <Mail className='w-4 h-4 mt-1 shrink-0' />
-                  <span>info@medic.com</span>
-                </li>
-                <li className='flex items-start gap-2'>
-                  <MapPin className='w-4 h-4 mt-1 shrink-0' />
-                  <span>123 Medical St, Health City</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className='border-t border-white/10 pt-8 flex items-center justify-between'>
-            <p className='text-blue-200 text-sm'>
-              © 2025 Medic. All rights reserved.
-            </p>
-            <Button variant='ghost' className='text-blue-200 hover:text-white'>
-              Appointment Now
-            </Button>
-          </div>
-        </div>
-
-        {/* Doctor Image in Footer */}
-      </footer>
+      {/* Latest Blog - With Suspense */}
+      <Suspense fallback={<BlogsSectionSkeleton />}>
+        <BlogsSection />
+      </Suspense>
     </div>
   );
 }
