@@ -65,9 +65,9 @@ async function getDoctorById(id: string): Promise<DoctorDetail> {
 export default async function DoctorDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const doctor = await getDoctorById(id);
