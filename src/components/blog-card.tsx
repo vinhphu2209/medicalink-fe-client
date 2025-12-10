@@ -65,9 +65,11 @@ export function BlogCard({
 
         {/* Title */}
         <div className='flex-1'>
-          <h3 className='font-semibold text-md text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors'>
-            {title}
-          </h3>
+          <Link href={`/blogs/${slug}`}>
+            <h3 className='font-semibold text-md text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors'>
+              {title}
+            </h3>
+          </Link>
         </div>
 
         {/* Meta Information */}
