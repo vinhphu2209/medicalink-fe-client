@@ -16,9 +16,9 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
     const [searchLoading, setSearchLoading] = useState(false)
     const [error, setError] = useState("")
     const [foundPatient, setFoundPatient] = useState(false)
+    const [patientId, setPatientId] = useState<string>("")
 
     const [formData, setFormData] = useState({
-        id: "",
         fullName: "",
         email: "",
         phone: "",
@@ -58,7 +58,6 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
 
             if (data.success && data.data) {
                 setFormData({
-                    id: data.data.id || "",
                     fullName: data.data.fullName || "",
                     email: data.data.email || "",
                     phone: data.data.phone || "",
@@ -68,6 +67,7 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
                     district: data.data.district || "",
                     province: data.data.province || "",
                 })
+                setPatientId(data.data.id || "")
                 setFoundPatient(true)
             } else {
                 setError("Patient not found")
@@ -289,10 +289,10 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
                                         onChange={(e) => setSearchType(e.target.value as any)}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
-                                        <option value="name">Name</option>
+                                        {/* <option value="name">Name</option> */}
                                         <option value="phone">Phone Number</option>
                                         <option value="email">Email</option>
-                                        <option value="dob">Date of Birth</option>
+                                        {/* <option value="dob">Date of Birth</option> */}
                                     </select>
                                 </div>
                                 <div>
@@ -388,7 +388,7 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
                                     )}
                                     <Button
                                         type="button"
-                                        onClick={() => onComplete(formData.id)}
+                                        onClick={() => onComplete(patientId)}
                                         className="flex-1 px-4 h-9 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
                                     >
                                         Continue

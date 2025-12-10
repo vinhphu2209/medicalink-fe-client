@@ -177,7 +177,9 @@ export default function PatientLookup() {
     }
 
     const formatTime = (timeString: string) => {
-        return new Date(`1970-01-01${timeString}`).toLocaleTimeString("en-US", {
+        // Extract time from ISO string like "1970-01-01T08:00:00.000Z"
+        const date = new Date(timeString)
+        return date.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
             hour12: true,
