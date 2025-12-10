@@ -227,7 +227,7 @@ export default function PatientLookup() {
                                 <Input
                                     type="tel"
                                     name="phone"
-                                    placeholder="0834277118"
+                                    placeholder="0123456789"
                                     value={searchParams.phone}
                                     onChange={handleInputChange}
                                     className="w-full"
@@ -238,7 +238,7 @@ export default function PatientLookup() {
                                 <Input
                                     type="text"
                                     name="name"
-                                    placeholder="John Doe"
+                                    placeholder="Phu Le"
                                     value={searchParams.name}
                                     onChange={handleInputChange}
                                     className="w-full"

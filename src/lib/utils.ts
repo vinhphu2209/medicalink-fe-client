@@ -14,6 +14,6 @@ export function removeHtmlElements(html: string) {
   return result;
 }
 
-export function replaceNbsps(str: string) {
-  return str.replace(/&nbsp;|\u00A0/g, ' ');
+export function replaceNbsps(str?: string | null) {
+  return (str ?? '').replace(/&nbsp;|\u00A0/g, ' ');
 }
