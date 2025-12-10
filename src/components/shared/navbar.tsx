@@ -36,11 +36,10 @@ export function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-300 border-b ${
-        isScrolled
+      className={`fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-300 border-b ${isScrolled
           ? 'bg-linear-to-br from-[#0A2463]/80 to-[#1e3a8a]/80 backdrop-blur-sm border-white/10 shadow-lg'
           : 'bg-linear-to-br from-[#0A2463] to-[#1e3a8a] border-transparent'
-      }`}
+        }`}
     >
       <div className='max-w-7xl mx-auto flex items-center justify-between'>
         {/* Logo */}
@@ -74,10 +73,10 @@ export function Navbar() {
             Blogs
           </Link>
           <Link
-            href='/contact'
+            href='/patient-lookup'
             className='hover:text-blue-300 transition-colors'
           >
-            Contact
+            Patient Lookup
           </Link>
         </div>
 
@@ -98,11 +97,10 @@ export function Navbar() {
       {/* Mobile Navigation */}
       {isOpen && (
         <div
-          className={`md:hidden absolute top-full left-0 right-0 border-t border-white/10 transition-all duration-300 ${
-            isScrolled
+          className={`md:hidden absolute top-full left-0 right-0 border-t border-white/10 transition-all duration-300 ${isScrolled
               ? 'bg-gradient-to-br from-[#0A2463]/80 to-[#1e3a8a]/80 backdrop-blur-md'
               : 'bg-gradient-to-br from-[#0A2463] to-[#1e3a8a]'
-          }`}
+            }`}
         >
           <div className='max-w-7xl mx-auto px-6 py-4 flex flex-col gap-4'>
             <Link
@@ -130,10 +128,10 @@ export function Navbar() {
               Blogs
             </Link>
             <Link
-              href='/contact'
+              href='/patient-lookup'
               className='text-white hover:text-blue-300 transition-colors py-2'
             >
-              Contact
+              Patient Lookup
             </Link>
             <BookAppointmentButton />
           </div>

@@ -18,6 +18,7 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
     const [foundPatient, setFoundPatient] = useState(false)
 
     const [formData, setFormData] = useState({
+        id: "",
         fullName: "",
         email: "",
         phone: "",
@@ -57,6 +58,7 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
 
             if (data.success && data.data) {
                 setFormData({
+                    id: data.data.id || "",
                     fullName: data.data.fullName || "",
                     email: data.data.email || "",
                     phone: data.data.phone || "",
@@ -386,7 +388,7 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
                                     )}
                                     <Button
                                         type="button"
-                                        onClick={() => onComplete(formData.fullName)}
+                                        onClick={() => onComplete(formData.id)}
                                         className="flex-1 px-4 h-9 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
                                     >
                                         Continue
