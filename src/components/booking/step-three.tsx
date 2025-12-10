@@ -10,6 +10,28 @@ interface StepThreeProps {
     onBack?: () => void
 }
 
+// Format time: "14:00" → "2:00 PM"
+function formatToAmPm(time: string) {
+    const [hour, minute] = time.split(":")
+    let h = parseInt(hour, 10)
+    const suffix = h >= 12 ? "PM" : "AM"
+
+    if (h === 0) h = 12
+    else if (h > 12) h -= 12
+
+    return `${h}:${minute} ${suffix}`
+}
+
+// Format date: convert to "Jan 10, 2025"
+function formatDate(dateString: string) {
+    const date = new Date(dateString)
+    return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    })
+}
+
 export default function StepThree({ onComplete, bookingData, onBack }: StepThreeProps) {
     const [reason, setReason] = useState("")
     const [loading, setLoading] = useState(false)
@@ -45,58 +67,62 @@ export default function StepThree({ onComplete, bookingData, onBack }: StepThree
     }
 
     return (
-        <div className="max-w-2xl mx-auto">
-            <div className="space-y-6">
-                {error && <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">{error}</div>}
+        <div className="space-y-6">
+            {error && <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">{error}</div>}
 
-                <div className="bg-gray-50 rounded-lg p-6 space-y-4">
-                    <h2 className="text-lg font-semibold text-gray-900">Appointment Summary</h2>
-                    <div className="space-y-3 text-sm text-gray-600">
-                        <p>
-                            <strong>Doctor:</strong> {bookingData.doctorName}
-                        </p>
-                        <p>
-                            <strong>Date:</strong> {new Date(bookingData.serviceDate).toLocaleDateString()}
-                        </p>
-                        <p>
-                            <strong>Time:</strong> {bookingData.timeStart} - {bookingData.timeEnd}
+            <div className="bg-linear-to-br from-blue-50 to-blue-100/50 rounded-2xl p-8 border border-blue-100">
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Appointment Summary</h2>
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-blue-200">
+                        <span className="text-sm font-semibold text-gray-600 uppercase">Doctor</span>
+                        <p className="font-bold text-gray-900">{bookingData.doctorName}</p>
+                    </div>
+                    <div className="flex items-center justify-between pb-3 border-b border-blue-200">
+                        <span className="text-sm font-semibold text-gray-600 uppercase">Date</span>
+                        <p className="font-bold text-gray-900">{formatDate(bookingData.serviceDate)}</p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span className="text-sm font-semibold text-gray-600 uppercase">Time</span>
+                        <p className="font-bold text-gray-900">
+                            {formatToAmPm(bookingData.timeStart)} - {formatToAmPm(bookingData.timeEnd)}
                         </p>
                     </div>
                 </div>
-
-                {/* Reason Form */}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-semibold text-gray-900 mb-2">Reason for Visit</label>
-                        <textarea
-                            value={reason}
-                            onChange={(e) => setReason(e.target.value)}
-                            placeholder="Describe the reason for your visit"
-                            rows={4}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-
-                    <div className="flex gap-4">
-                        {onBack && (
-                            <Button
-                                type="button"
-                                onClick={onBack}
-                                className="flex-1 px-4 py-3 rounded-lg font-semibold border border-gray-300 text-gray-700 bg-gray-100 hover:bg-gray-200 transition"
-                            >
-                                Back
-                            </Button>
-                        )}
-                        <Button
-                            type="submit"
-                            disabled={loading}
-                            className={`${onBack ? "flex-1" : "w-full"} bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold`}
-                        >
-                            {loading ? "Processing..." : "Complete Booking"}
-                        </Button>
-                    </div>
-                </form>
             </div>
+
+            {/* Reason Form */}
+            <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                    <label className="block text-sm font-semibold text-gray-900 mb-2">Reason for Visit</label>
+                    <textarea
+                        value={reason}
+                        onChange={(e) => setReason(e.target.value)}
+                        placeholder="Describe the reason for your visit (optional)"
+                        rows={4}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                <div className="flex gap-4 pt-6">
+                    {onBack && (
+                        <button
+                            type="button"
+                            onClick={onBack}
+                            className="flex-1 px-4 py-3 rounded-lg font-semibold border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition"
+                        >
+                            Back
+                        </button>
+                    )}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`${onBack ? "flex-1" : "w-full"} px-4 py-3 rounded-lg font-semibold text-white transition ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                            }`}
+                    >
+                        {loading ? "Processing..." : "Complete Booking"}
+                    </button>
+                </div>
+            </form>
         </div>
     )
 }

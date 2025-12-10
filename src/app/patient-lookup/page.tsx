@@ -5,7 +5,7 @@ import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
-import { AlertCircle, Loader2, Check } from "lucide-react"
+import { AlertCircle, Loader2, Check, Search } from "lucide-react"
 
 interface Patient {
     id: string
@@ -177,7 +177,6 @@ export default function PatientLookup() {
     }
 
     const formatTime = (timeString: string) => {
-        // Extract time from ISO string like "1970-01-01T08:00:00.000Z"
         const date = new Date(timeString)
         return date.toLocaleTimeString("en-US", {
             hour: "2-digit",
@@ -202,168 +201,199 @@ export default function PatientLookup() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 pt-32 pb-12">
-            <div className="max-w-5xl mx-auto px-4">
-                <div className="bg-white rounded-lg shadow-lg p-8">
-                    <h1 className="text-3xl font-bold text-center mb-2 text-[#0A2463]">Patient Lookup</h1>
-                    <p className="text-center text-gray-600 mb-8">
-                        Search for patient information and view their appointment history
-                    </p>
+        <div className="min-h-screen">
+            {/* Hero Section */}
+            <section className='relative bg-linear-to-br from-[#0A2463] to-[#1e3a8a] pt-[100px] pb-10 overflow-hidden'>
+                <div className='absolute inset-0 opacity-10'>
+                    <div className='absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full' />
+                    <div className='absolute bottom-20 right-20 w-24 h-24 border-2 border-white rounded-full' />
+                    <div className='absolute top-1/2 left-1/4 w-2 h-2 bg-white rounded-full' />
+                    <div className='absolute top-1/3 right-1/3 w-2 h-2 bg-white rounded-full' />
+                </div>
 
-                    {/* Search Form */}
-                    <form onSubmit={handleSearch} className="mb-8">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                                <Input
-                                    type="email"
-                                    name="email"
-                                    placeholder="example@email.com"
-                                    value={searchParams.email}
-                                    onChange={handleInputChange}
-                                    className="w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                                <Input
-                                    type="tel"
-                                    name="phone"
-                                    placeholder="0123456789"
-                                    value={searchParams.phone}
-                                    onChange={handleInputChange}
-                                    className="w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                                <Input
-                                    type="text"
-                                    name="name"
-                                    placeholder="Phu Le"
-                                    value={searchParams.name}
-                                    onChange={handleInputChange}
-                                    className="w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
-                                <Input
-                                    type="date"
-                                    name="dob"
-                                    value={searchParams.dob}
-                                    onChange={handleInputChange}
-                                    className="w-full"
-                                />
-                            </div>
+                <div className='max-w-7xl mx-auto px-6 relative'>
+                    <div className='text-center text-white space-y-6'>
+                        <div className='inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-4'>
+                            <Search className='w-4 h-4' />
+                            <span className='text-sm font-medium'>Patient Portal</span>
                         </div>
 
-                        {error && (
-                            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3">
-                                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                                <p className="text-red-700">{error}</p>
-                            </div>
-                        )}
+                        <h1 className='text-5xl md:text-6xl font-bold leading-tight'>
+                            FIND YOUR
+                            <span className='block text-blue-300'>APPOINTMENT RECORDS</span>
+                        </h1>
 
-                        <div className="flex justify-center">
-                            <Button
-                                type="submit"
-                                disabled={loading}
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-lg font-medium"
-                            >
-                                {loading ? (
-                                    <>
-                                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                        Searching...
-                                    </>
-                                ) : (
-                                    "Search Patient"
-                                )}
-                            </Button>
-                        </div>
-                    </form>
+                        <p className='text-blue-100 text-lg max-w-2xl mx-auto'>
+                            Search for your patient information and view your complete appointment history
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Main Content */}
+            <section className='max-w-5xl mx-auto px-6 py-12'>
+                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+                    {/* Search Form Section */}
+                    <div className="mb-12">
+                        <h2 className="text-3xl font-bold mb-2 text-gray-900">Search Patient Records</h2>
+                        <p className="text-gray-600 mb-8">
+                            Enter your information to find your patient records and appointment history
+                        </p>
+
+                        <form onSubmit={handleSearch} className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2">Email</label>
+                                    <Input
+                                        type="email"
+                                        name="email"
+                                        placeholder="example@email.com"
+                                        value={searchParams.email}
+                                        onChange={handleInputChange}
+                                        className="w-full"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2">Phone</label>
+                                    <Input
+                                        type="tel"
+                                        name="phone"
+                                        placeholder="0123456789"
+                                        value={searchParams.phone}
+                                        onChange={handleInputChange}
+                                        className="w-full"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2">Full Name</label>
+                                    <Input
+                                        type="text"
+                                        name="name"
+                                        placeholder="Your full name"
+                                        value={searchParams.name}
+                                        onChange={handleInputChange}
+                                        className="w-full"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2">Date of Birth</label>
+                                    <Input
+                                        type="date"
+                                        name="dob"
+                                        value={searchParams.dob}
+                                        onChange={handleInputChange}
+                                        className="w-full"
+                                    />
+                                </div>
+                            </div>
+
+                            {error && (
+                                <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3">
+                                    <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                                    <p className="text-red-700">{error}</p>
+                                </div>
+                            )}
+
+                            <div className="flex justify-center pt-4">
+                                <Button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold"
+                                >
+                                    {loading ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                            Searching...
+                                        </>
+                                    ) : (
+                                        "Search Patient"
+                                    )}
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
 
                     {/* Patient Information */}
                     {patient && (
-                        <div className="mb-8 border-t pt-8">
-                            <h2 className="text-2xl font-bold mb-6 text-[#0A2463]">Patient Information</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg mb-8">
+                        <div className="border-t pt-12">
+                            <h2 className="text-3xl font-bold mb-8 text-gray-900">Patient Information</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gradient-to-br from-blue-50 to-blue-100/50 p-8 rounded-2xl mb-12 border border-blue-100">
                                 <div>
-                                    <p className="text-sm text-gray-600 font-medium">Full Name</p>
-                                    <p className="text-lg font-semibold text-gray-900">{patient.fullName}</p>
+                                    <p className="text-sm text-gray-600 font-semibold uppercase tracking-wider mb-1">Full Name</p>
+                                    <p className="text-lg font-bold text-gray-900">{patient.fullName}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-600 font-medium">Email</p>
-                                    <p className="text-lg font-semibold text-gray-900">{patient.email}</p>
+                                    <p className="text-sm text-gray-600 font-semibold uppercase tracking-wider mb-1">Email</p>
+                                    <p className="text-lg font-bold text-gray-900">{patient.email}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-600 font-medium">Phone</p>
-                                    <p className="text-lg font-semibold text-gray-900">{patient.phone}</p>
+                                    <p className="text-sm text-gray-600 font-semibold uppercase tracking-wider mb-1">Phone</p>
+                                    <p className="text-lg font-bold text-gray-900">{patient.phone}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-600 font-medium">Gender</p>
-                                    <p className="text-lg font-semibold text-gray-900">{patient.isMale ? "Male" : "Female"}</p>
+                                    <p className="text-sm text-gray-600 font-semibold uppercase tracking-wider mb-1">Gender</p>
+                                    <p className="text-lg font-bold text-gray-900">{patient.isMale ? "Male" : "Female"}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-600 font-medium">Date of Birth</p>
-                                    <p className="text-lg font-semibold text-gray-900">{formatDate(patient.dateOfBirth)}</p>
+                                    <p className="text-sm text-gray-600 font-semibold uppercase tracking-wider mb-1">Date of Birth</p>
+                                    <p className="text-lg font-bold text-gray-900">{formatDate(patient.dateOfBirth)}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-600 font-medium">Address</p>
-                                    <p className="text-lg font-semibold text-gray-900">
+                                    <p className="text-sm text-gray-600 font-semibold uppercase tracking-wider mb-1">Address</p>
+                                    <p className="text-lg font-bold text-gray-900">
                                         {patient.addressLine}, {patient.district}, {patient.province}
                                     </p>
                                 </div>
                             </div>
 
                             {/* Appointments List */}
-                            <h3 className="text-xl font-bold mb-6 text-[#0A2463]">Appointment History</h3>
+                            <h3 className="text-2xl font-bold mb-8 text-gray-900">Appointment History</h3>
 
                             {appointments.length > 0 ? (
                                 <>
-                                    <div className="space-y-4 mb-6">
+                                    <div className="space-y-4 mb-8">
                                         {appointments.map((appointment) => (
                                             <div
                                                 key={appointment.id}
-                                                className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+                                                className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow bg-white"
                                             >
                                                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <div className="flex items-center gap-3 mb-3">
+                                                        <div className="flex items-center gap-4 mb-4">
                                                             <img
                                                                 src={appointment.doctor.avatarUrl || "/placeholder.svg"}
                                                                 alt={appointment.doctor.fullName}
-                                                                className="w-12 h-12 rounded-full object-cover"
+                                                                className="w-14 h-14 rounded-full object-cover border-2 border-blue-200"
                                                             />
                                                             <div>
                                                                 <h4 className="font-bold text-gray-900">{appointment.doctor.fullName}</h4>
-                                                                <p className="text-sm text-gray-600">Doctor</p>
+                                                                <p className="text-sm text-gray-500">Doctor</p>
                                                             </div>
                                                         </div>
 
                                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                                             <div>
-                                                                <p className="text-xs text-gray-600 font-medium">Date</p>
+                                                                <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Date</p>
                                                                 <p className="font-semibold text-gray-900">
                                                                     {formatDate(appointment.event.serviceDate)}
                                                                 </p>
                                                             </div>
                                                             <div>
-                                                                <p className="text-xs text-gray-600 font-medium">Time</p>
+                                                                <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Time</p>
                                                                 <p className="font-semibold text-gray-900">
                                                                     {formatTime(appointment.event.timeStart)} - {formatTime(appointment.event.timeEnd)}
                                                                 </p>
                                                             </div>
                                                             <div>
-                                                                <p className="text-xs text-gray-600 font-medium">Status</p>
+                                                                <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Status</p>
                                                                 <span
-                                                                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mt-1 ${getStatusColor(appointment.status)}`}
+                                                                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(appointment.status)}`}
                                                                 >
                                                                     {appointment.status}
                                                                 </span>
                                                             </div>
                                                             <div>
-                                                                <p className="text-xs text-gray-600 font-medium">Price</p>
+                                                                <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Price</p>
                                                                 <p className="font-semibold text-gray-900">
                                                                     {appointment.priceAmount
                                                                         ? `${appointment.priceAmount} ${appointment.currency}`
@@ -373,13 +403,13 @@ export default function PatientLookup() {
                                                         </div>
 
                                                         <div className="mt-4">
-                                                            <p className="text-xs text-gray-600 font-medium mb-1">Reason for Visit</p>
+                                                            <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Reason for Visit</p>
                                                             <p className="text-gray-900">{appointment.reason}</p>
                                                         </div>
 
                                                         {appointment.notes && (
                                                             <div className="mt-3">
-                                                                <p className="text-xs text-gray-600 font-medium mb-1">Notes</p>
+                                                                <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Notes</p>
                                                                 <p className="text-gray-900">{appointment.notes}</p>
                                                             </div>
                                                         )}
@@ -387,7 +417,7 @@ export default function PatientLookup() {
                                                         {appointment.completedAt && (
                                                             <div className="mt-3 flex items-center gap-2 text-green-700">
                                                                 <Check className="w-4 h-4" />
-                                                                <p className="text-sm">Completed on {formatDate(appointment.completedAt)}</p>
+                                                                <p className="text-sm font-semibold">Completed on {formatDate(appointment.completedAt)}</p>
                                                             </div>
                                                         )}
                                                     </div>
@@ -398,7 +428,7 @@ export default function PatientLookup() {
 
                                     {/* Pagination */}
                                     {totalPages > 1 && (
-                                        <div className="flex justify-center items-center gap-2">
+                                        <div className="flex justify-center items-center gap-2 pt-8">
                                             <Button
                                                 onClick={() => handlePageChange(currentPage - 1)}
                                                 disabled={currentPage === 1 || loading}
@@ -430,14 +460,14 @@ export default function PatientLookup() {
                                     )}
                                 </>
                             ) : (
-                                <div className="text-center py-8 bg-gray-50 rounded-lg">
-                                    <p className="text-gray-600">No appointments found for this patient.</p>
+                                <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                    <p className="text-gray-600 text-lg">No appointments found for this patient.</p>
                                 </div>
                             )}
                         </div>
                     )}
                 </div>
-            </div>
+            </section>
         </div>
     )
 }
