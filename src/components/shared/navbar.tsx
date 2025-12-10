@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { ArrowRight, Menu, X } from 'lucide-react';
 
@@ -24,10 +25,13 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  const pathname = usePathname();
+  const isLanding = useMemo(() => pathname === '/', [pathname]);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      setIsScrolled(scrollPosition > 20);
+      setIsScrolled(scrollPosition > 100);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -39,7 +43,9 @@ export function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-300 border-b ${
         isScrolled
           ? 'bg-linear-to-br from-[#0A2463]/80 to-[#1e3a8a]/80 backdrop-blur-sm border-white/10 shadow-lg'
-          : 'bg-linear-to-br from-[#0A2463] to-[#1e3a8a] border-transparent'
+          : isLanding
+            ? 'bg-transparent border-transparent'
+            : 'bg-linear-to-br from-[#0A2463] to-[#1e3a8a] border-transparent'
       }`}
     >
       <div className='max-w-7xl mx-auto flex items-center justify-between'>

@@ -53,7 +53,7 @@ export function LocationsSection() {
 
   if (loading) {
     return (
-      <section className='bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] py-20'>
+      <section className='bg-linear-to-br from-blue-950 via-blue-900 to-blue-950 py-20'>
         <div className='max-w-7xl mx-auto px-6'>
           <div className='text-white mb-12'>
             <h2 className='text-4xl font-bold mb-2'>OUR CLINICS</h2>
@@ -71,7 +71,7 @@ export function LocationsSection() {
 
   if (error || locations.length === 0) {
     return (
-      <section className='bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] py-20'>
+      <section className='bg-linear-to-br from-blue-950 via-blue-900 to-blue-950 py-20'>
         <div className='max-w-7xl mx-auto px-6'>
           <div className='text-white mb-12'>
             <h2 className='text-4xl font-bold mb-2'>OUR CLINICS</h2>
@@ -90,8 +90,8 @@ export function LocationsSection() {
   }
 
   return (
-    <section className='bg-gradient-to-br from-[#0A2463] to-[#1e3a8a] pt-10 pb-14'>
-      <div className='px-6'>
+    <section className='bg-linear-to-br from-blue-950 via-blue-900 to-blue-950 pt-10 pb-14'>
+      <div className='px-6 max-w-7xl mx-auto'>
         <div className='text-white mb-12 mx-1.5'>
           <h2 className='text-4xl font-bold mb-2'>OUR CLINICS</h2>
           <p className='text-blue-200'>
@@ -99,7 +99,7 @@ export function LocationsSection() {
           </p>
         </div>
 
-        <div className='relative w-[calc(100%-12px)] mx-auto'>
+        <div className='relative mx-auto'>
           <Carousel
             opts={{
               align: 'start',

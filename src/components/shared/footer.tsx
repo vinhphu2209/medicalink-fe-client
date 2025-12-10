@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export function Footer() {
   return (
-    <footer className='bg-linear-to-br from-[#0A2463] to-[#1e3a8a] text-white py-12'>
+    <footer className='bg-linear-to-br from-blue-950 via-blue-900 to-blue-950 text-white py-12'>
       <div className='max-w-7xl mx-auto'>
         <div className='flex items-center justify-between'>
           <div className='flex flex-col gap-1'>
