@@ -138,7 +138,7 @@ export default async function BlogDetailPage({
     ]);
 
     return (
-      <div className='min-h-screen bg-gray-50 pt-[80px] pb-20'>
+      <div className='min-h-screen pt-[80px] pb-20'>
         <div className='max-w-7xl mx-auto px-6 py-10'>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-10'>
             {/* Main Content */}

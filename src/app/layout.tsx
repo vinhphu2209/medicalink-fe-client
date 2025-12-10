@@ -42,7 +42,7 @@ export default function RootLayout({
         />
 
         <Navbar />
-        {children}
+        <div className='min-h-screen'>{children}</div>
         <Footer />
         <Analytics />
         <Toaster duration={5000} richColors />
