@@ -58,6 +58,16 @@ interface Appointment {
         avatarUrl: string
         name: string
     }
+    location: {
+        id: string
+        name: string
+        address: string
+    }
+    specialty: {
+        id: string
+        name: string
+        slug: string
+    }
 }
 
 interface AppointmentResponse {
@@ -100,11 +110,16 @@ export default function PatientLookup() {
         setError("")
     }
 
+    const formatPrice = (amount: string | null) => {
+        if (!amount || amount === "0") return "N/A"
+        return Number(amount).toLocaleString()
+    }
+
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        if (!searchParams.email && !searchParams.phone && !searchParams.name) {
-            setError("Please enter at least one search field")
+        if (!searchParams.email && !searchParams.phone) {
+            setError("Please enter email or phone")
             return
         }
 
@@ -191,6 +206,8 @@ export default function PatientLookup() {
                 return "bg-blue-100 text-blue-800"
             case "CONFIRMED":
                 return "bg-green-100 text-green-800"
+            case "RESCHEDULED":
+                return "bg-amber-100 text-amber-800"
             case "COMPLETED":
                 return "bg-gray-100 text-gray-800"
             case "CANCELLED":
@@ -241,50 +258,32 @@ export default function PatientLookup() {
                         </p>
 
                         <form onSubmit={handleSearch} className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-2">Email</label>
-                                    <Input
-                                        type="email"
-                                        name="email"
-                                        placeholder="example@email.com"
-                                        value={searchParams.email}
-                                        onChange={handleInputChange}
-                                        className="w-full"
-                                    />
+                            <div className="bg-linear-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl border border-blue-100">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-900 mb-3">Email Address</label>
+                                        <Input
+                                            type="email"
+                                            name="email"
+                                            placeholder="your.email@example.com"
+                                            value={searchParams.email}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-white border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-900 mb-3">Phone Number</label>
+                                        <Input
+                                            type="tel"
+                                            name="phone"
+                                            placeholder="+1 (555) 000-0000"
+                                            value={searchParams.phone}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-white border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                                        />
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-2">Phone</label>
-                                    <Input
-                                        type="tel"
-                                        name="phone"
-                                        placeholder="0123456789"
-                                        value={searchParams.phone}
-                                        onChange={handleInputChange}
-                                        className="w-full"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-2">Full Name</label>
-                                    <Input
-                                        type="text"
-                                        name="name"
-                                        placeholder="Your full name"
-                                        value={searchParams.name}
-                                        onChange={handleInputChange}
-                                        className="w-full"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-2">Date of Birth</label>
-                                    <Input
-                                        type="date"
-                                        name="dob"
-                                        value={searchParams.dob}
-                                        onChange={handleInputChange}
-                                        className="w-full"
-                                    />
-                                </div>
+                                <p className="text-sm text-gray-600 mt-4">Please provide at least one of the above to search for your records.</p>
                             </div>
 
                             {error && (
@@ -294,11 +293,11 @@ export default function PatientLookup() {
                                 </div>
                             )}
 
-                            <div className="flex justify-center pt-4">
+                            <div className="flex justify-center pt-2">
                                 <Button
                                     type="submit"
                                     disabled={loading}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all"
                                 >
                                     {loading ? (
                                         <>
@@ -317,7 +316,7 @@ export default function PatientLookup() {
                     {patient && (
                         <div className="border-t pt-12">
                             <h2 className="text-3xl font-bold mb-8 text-gray-900">Patient Information</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gradient-to-br from-blue-50 to-blue-100/50 p-8 rounded-2xl mb-12 border border-blue-100">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-linear-to-br from-blue-50 to-blue-100/50 p-8 rounded-2xl mb-12 border border-blue-100">
                                 <div>
                                     <p className="text-sm text-gray-600 font-semibold uppercase tracking-wider mb-1">Full Name</p>
                                     <p className="text-lg font-bold text-gray-900">{patient.fullName}</p>
@@ -347,7 +346,7 @@ export default function PatientLookup() {
                             </div>
 
                             {/* Appointments List */}
-                            <h3 className="text-2xl font-bold mb-8 text-gray-900">Appointment History</h3>
+                            <h2 className="text-3xl font-bold mb-8 text-gray-900">Appointment History</h2>
 
                             {appointments.length > 0 ? (
                                 <>
@@ -395,22 +394,44 @@ export default function PatientLookup() {
                                                             <div>
                                                                 <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Price</p>
                                                                 <p className="font-semibold text-gray-900">
-                                                                    {appointment.priceAmount
-                                                                        ? `${appointment.priceAmount} ${appointment.currency}`
-                                                                        : "N/A"}
+                                                                    {formatPrice(appointment.priceAmount)} {appointment.currency}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Location</p>
+                                                                <p className="font-semibold text-gray-900">{appointment.location.name}</p>
+                                                                <p className="text-sm text-gray-600">{appointment.location.address}</p>
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Specialty</p>
+                                                                <p className="font-semibold text-gray-900">{appointment.specialty.name}</p>
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Created / Updated</p>
+                                                                <p className="font-semibold text-gray-900">
+                                                                    {formatDate(appointment.createdAt)}
+                                                                    {" - "}
+                                                                    {formatDate(appointment.updatedAt)}
                                                                 </p>
                                                             </div>
                                                         </div>
 
-                                                        <div className="mt-4">
-                                                            <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Reason for Visit</p>
-                                                            <p className="text-gray-900">{appointment.reason}</p>
+                                                        {appointment.cancelledAt && (
+                                                            <div className="mt-3">
+                                                                <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Cancelled At</p>
+                                                                <p className="font-semibold text-red-600">{formatDate(appointment.cancelledAt)}</p>
+                                                            </div>
+                                                        )}
+
+                                                        <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                                            <p className="text-xs text-blue-700 font-bold uppercase tracking-wider mb-2">Reason for Visit</p>
+                                                            <p className="text-blue-900 font-semibold">{appointment.reason}</p>
                                                         </div>
 
                                                         {appointment.notes && (
-                                                            <div className="mt-3">
-                                                                <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider mb-1">Notes</p>
-                                                                <p className="text-gray-900">{appointment.notes}</p>
+                                                            <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
+                                                                <p className="text-xs text-amber-700 font-bold uppercase tracking-wider mb-2">Notes</p>
+                                                                <p className="text-amber-900 font-semibold">{appointment.notes}</p>
                                                             </div>
                                                         )}
 
