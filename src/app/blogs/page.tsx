@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
@@ -21,7 +21,7 @@ import {
 import { useDebounce } from '@/hooks/use-debounce';
 import type { Blog, BlogCategory, PaginationMeta } from '@/types/blog';
 
-export default function BlogsPage() {
+function BlogsContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get('category');
   // Data State
@@ -263,5 +263,24 @@ export default function BlogsPage() {
         )}
       </section>
     </div>
+  );
+}
+
+export default function BlogsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className='min-h-screen pt-[80px]'>
+          <div className='flex items-center justify-center py-20'>
+            <div className='text-center space-y-4'>
+              <div className='w-12 h-12 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mx-auto' />
+              <p className='text-gray-600'>Loading blogs...</p>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <BlogsContent />
+    </Suspense>
   );
 }
