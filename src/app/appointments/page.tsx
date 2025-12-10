@@ -48,9 +48,9 @@ export default function AppointmentsPage() {
     }
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen bg-gray-50">
             {/* Hero Section */}
-            <section className="relative bg-linear-to-br from-[#0A2463] to-[#1e3a8a] pt-[100px] pb-10 overflow-hidden">
+            <section className="relative bg-linear-to-br from-[#0A2463] to-[#1e3a8a] pt-[100px] pb-16 overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full" />
                     <div className="absolute bottom-20 right-20 w-24 h-24 border-2 border-white rounded-full" />
@@ -82,21 +82,28 @@ export default function AppointmentsPage() {
             </section>
 
             {/* Steps Section */}
-            <section className="max-w-5xl mx-auto px-4 md:px-6 py-12">
-                {/* Step Indicator */}
-                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 mb-6">
+            <section className="max-w-4xl mx-auto px-4 md:px-6 py-12">
+                {/* Progress Indicator */}
+                <div className="mb-8">
                     <div className="flex items-center justify-center mb-6">
-                        {[1, 2, 3].map((step) => (
+                        {[1, 2, 3].map((step, index) => (
                             <div key={step} className="flex items-center">
-                                <div
-                                    className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-white transition-all ${step <= currentStep ? "bg-blue-600" : "bg-gray-300"
-                                        }`}
-                                >
-                                    {step}
+                                <div className="flex flex-col items-center">
+                                    <div
+                                        className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-white transition-all shadow-lg ${step <= currentStep ? "bg-blue-600" : "bg-gray-300"
+                                            }`}
+                                    >
+                                        {step}
+                                    </div>
+                                    <p className="text-xs font-semibold mt-2 text-gray-600 whitespace-nowrap">
+                                        {step === 1 && "Location"}
+                                        {step === 2 && "Patient"}
+                                        {step === 3 && "Confirm"}
+                                    </p>
                                 </div>
                                 {step < 3 && (
                                     <div
-                                        className={`w-10 h-1 mx-2 transition-all ${step < currentStep ? "bg-blue-600" : "bg-gray-300"
+                                        className={`w-24 md:w-32 h-1 mx-4 transition-all rounded-full ${step < currentStep ? "bg-blue-600" : "bg-gray-300"
                                             }`}
                                     />
                                 )}
@@ -110,12 +117,12 @@ export default function AppointmentsPage() {
                             {currentStep === 3 && "Review & Confirm"}
                             {currentStep === 4 && "Booking Complete"}
                         </h2>
-                        <p className="text-gray-500 mt-2">Step {Math.min(currentStep, 3)} of 3</p>
+                        <p className="text-gray-500 mt-2 font-medium">Step {Math.min(currentStep, 3)} of 3</p>
                     </div>
                 </div>
 
-                {/* Steps */}
-                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8">
+                {/* Content Card */}
+                <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-12">
                     {currentStep === 1 && (
                         <StepOne onComplete={handleStepOneComplete} onBack={currentStep > 1 ? handleBack : undefined} />
                     )}
@@ -126,17 +133,17 @@ export default function AppointmentsPage() {
                         <StepThree onComplete={handleStepThreeComplete} bookingData={bookingData} onBack={handleBack} />
                     )}
                     {currentStep === 4 && (
-                        <div className="text-center py-10">
-                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="text-center py-16">
+                            <div className="w-20 h-20 bg-linear-to-br from-green-100 to-green-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                                <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <h2 className="text-2xl font-bold text-gray-900 mb-2">Appointment Booked Successfully!</h2>
-                            <p className="text-gray-600 mb-6">We will contact you shortly to confirm your appointment.</p>
+                            <h2 className="text-3xl font-bold text-gray-900 mb-3">Appointment Booked Successfully!</h2>
+                            <p className="text-gray-600 mb-8 max-w-md mx-auto">We will contact you shortly to confirm your appointment details.</p>
                             <button
                                 onClick={() => (window.location.href = "/")}
-                                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
+                                className="bg-blue-600 text-white px-8 py-3 rounded-xl hover:bg-blue-700 transition font-semibold shadow-lg hover:shadow-xl"
                             >
                                 Return to Home
                             </button>
