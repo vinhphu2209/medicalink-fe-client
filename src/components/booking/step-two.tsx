@@ -106,14 +106,14 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
     }
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-4">
             <div className="flex gap-0 border-b-2 border-gray-200">
                 <button
                     onClick={() => {
                         setActiveTab("new")
                         setFoundPatient(false)
                     }}
-                    className={`flex-1 py-4 px-6 text-center font-bold text-lg border-b-4 transition ${activeTab === "new"
+                    className={`flex-1 py-3 px-4 text-center font-bold text-base border-b-4 transition ${activeTab === "new"
                         ? "text-blue-600 border-blue-600"
                         : "text-gray-600 border-transparent hover:text-gray-900"
                         }`}
@@ -125,7 +125,7 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
                         setActiveTab("existing")
                         setFoundPatient(false)
                     }}
-                    className={`flex-1 py-4 px-6 text-center font-bold text-lg border-b-4 transition ${activeTab === "existing"
+                    className={`flex-1 py-3 px-4 text-center font-bold text-base border-b-4 transition ${activeTab === "existing"
                         ? "text-blue-600 border-blue-600"
                         : "text-gray-600 border-transparent hover:text-gray-900"
                         }`}
@@ -135,95 +135,95 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
             </div>
 
             {error && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-2 text-sm">
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
                     <span className="font-medium">{error}</span>
                 </div>
             )}
 
             {/* New Patient Form */}
             {activeTab === "new" && (
-                <form onSubmit={handleSubmit} className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Full Name</label>
+                            <label className="block text-xs font-bold text-gray-900 mb-1.5 uppercase tracking-wide">Full Name <span className="text-red-500">*</span></label>
                             <input
                                 type="text"
                                 name="fullName"
                                 value={formData.fullName}
                                 onChange={handleInputChange}
                                 required
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium"
+                                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium placeholder:text-gray-400"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Email</label>
+                            <label className="block text-xs font-bold text-gray-900 mb-1.5 uppercase tracking-wide">Email <span className="text-red-500">*</span></label>
                             <input
                                 type="email"
                                 name="email"
                                 value={formData.email}
                                 onChange={handleInputChange}
                                 required
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium"
+                                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium placeholder:text-gray-400"
                             />
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Phone Number</label>
+                            <label className="block text-xs font-bold text-gray-900 mb-1.5 uppercase tracking-wide">Phone Number <span className="text-red-500">*</span></label>
                             <input
                                 type="tel"
                                 name="phone"
                                 value={formData.phone}
                                 onChange={handleInputChange}
                                 required
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium"
+                                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium placeholder:text-gray-400"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Gender</label>
-                            <div className="flex gap-8 pt-2">
-                                <label className="flex items-center gap-3 cursor-pointer">
+                            <label className="block text-xs font-bold text-gray-900 mb-1.5 uppercase tracking-wide">Gender <span className="text-red-500">*</span></label>
+                            <div className="flex gap-6 pt-1.5">
+                                <label className="flex items-center gap-2 cursor-pointer">
                                     <input
                                         type="radio"
                                         name="gender"
                                         value="male"
                                         checked={formData.isMale === true}
                                         onChange={handleInputChange}
-                                        className="w-5 h-5 accent-blue-600"
+                                        className="w-4 h-4 accent-blue-600"
                                     />
-                                    <span className="text-base font-medium text-gray-900">Male</span>
+                                    <span className="text-sm font-medium text-gray-900">Male</span>
                                 </label>
-                                <label className="flex items-center gap-3 cursor-pointer">
+                                <label className="flex items-center gap-2 cursor-pointer">
                                     <input
                                         type="radio"
                                         name="gender"
                                         value="female"
                                         checked={formData.isMale === false}
                                         onChange={handleInputChange}
-                                        className="w-5 h-5 accent-blue-600"
+                                        className="w-4 h-4 accent-blue-600"
                                     />
-                                    <span className="text-base font-medium text-gray-900">Female</span>
+                                    <span className="text-sm font-medium text-gray-900">Female</span>
                                 </label>
                             </div>
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Date of Birth</label>
+                        <label className="block text-xs font-bold text-gray-900 mb-1.5 uppercase tracking-wide">Date of Birth <span className="text-red-500">*</span></label>
                         <input
                             type="date"
                             name="dateOfBirth"
                             value={formData.dateOfBirth}
                             onChange={handleInputChange}
                             required
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium"
+                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium placeholder:text-gray-400"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Address</label>
+                        <label className="block text-xs font-bold text-gray-900 mb-1.5 uppercase tracking-wide">Address <span className="text-red-500">*</span></label>
                         <input
                             type="text"
                             name="addressLine"
@@ -231,49 +231,40 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
                             onChange={handleInputChange}
                             placeholder="Street address or building name"
                             required
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium"
+                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium placeholder:text-gray-400"
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">District</label>
+                            <label className="block text-xs font-bold text-gray-900 mb-1.5 uppercase tracking-wide">District <span className="text-red-500">*</span></label>
                             <input
                                 type="text"
                                 name="district"
                                 value={formData.district}
                                 onChange={handleInputChange}
                                 required
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium"
+                                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium placeholder:text-gray-400"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Province</label>
+                            <label className="block text-xs font-bold text-gray-900 mb-1.5 uppercase tracking-wide">Province <span className="text-red-500">*</span></label>
                             <input
                                 type="text"
                                 name="province"
                                 value={formData.province}
                                 onChange={handleInputChange}
                                 required
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium"
+                                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium placeholder:text-gray-400"
                             />
                         </div>
                     </div>
 
-                    <div className="flex gap-4 pt-4">
-                        {onBack && (
-                            <button
-                                type="button"
-                                onClick={onBack}
-                                className="flex-1 px-6 py-3 rounded-xl font-semibold border-2 border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition"
-                            >
-                                Back
-                            </button>
-                        )}
+                    <div className="flex gap-3 pt-2">
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`${onBack ? "flex-1" : "w-full"} px-6 py-3 rounded-xl font-semibold text-white transition shadow-lg ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 hover:shadow-xl"
+                            className={`w-full px-4 py-2 text-sm rounded-xl font-semibold text-white transition shadow-lg ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 hover:shadow-xl'
                                 }`}
                         >
                             {loading ? "Processing..." : "Continue to Confirmation"}
@@ -284,30 +275,30 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
 
             {/* Returning Patient Tab */}
             {activeTab === "existing" && (
-                <div className="space-y-8">
-                    <div className="bg-linear-to-br from-blue-50 to-indigo-50 border border-blue-100 p-6 rounded-2xl">
-                        <p className="text-sm text-gray-700 mb-6 font-medium">Search for your existing patient record:</p>
+                <div className="space-y-4">
+                    <div className="bg-linear-to-br from-blue-50 to-indigo-50 border border-blue-100 p-4 rounded-2xl">
+                        <p className="text-sm text-gray-700 mb-4 font-medium">Search for your existing patient record:</p>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Search By</label>
+                                <label className="block text-xs font-bold text-gray-900 mb-1.5 uppercase tracking-wide">Search By</label>
                                 <select
                                     value={searchType}
                                     onChange={(e) => setSearchType(e.target.value as any)}
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium"
+                                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium"
                                 >
                                     <option value="phone">Phone Number</option>
                                     <option value="email">Email Address</option>
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Enter Value</label>
+                                <label className="block text-xs font-bold text-gray-900 mb-1.5 uppercase tracking-wide">Enter Value</label>
                                 <input
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Your phone or email"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium"
+                                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition font-medium placeholder:text-gray-400"
                                 />
                             </div>
                         </div>
@@ -315,7 +306,7 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
                         <button
                             onClick={handleSearch}
                             disabled={searchLoading}
-                            className="w-full px-6 py-3 rounded-xl font-semibold text-white transition shadow-lg bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 hover:shadow-xl"
+                            className="w-full px-4 py-2 text-sm rounded-xl font-semibold text-white transition shadow-lg bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 hover:shadow-xl"
                         >
                             {searchLoading ? "Searching..." : "Find My Record"}
                         </button>
@@ -323,61 +314,52 @@ export default function StepTwo({ onComplete, bookingData, onBack }: StepTwoProp
 
                     {foundPatient && (
                         <>
-                            <div className="bg-linear-to-br from-green-50 to-emerald-50 rounded-2xl p-6 space-y-6 border border-green-100">
-                                <div className="flex items-start gap-3 pb-4 border-b border-green-200">
-                                    <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                            <div className="bg-linear-to-br from-green-50 to-emerald-50 rounded-2xl p-4 space-y-4 border border-green-100">
+                                <div className="flex items-start gap-2 pb-2 border-b border-green-200">
+                                    <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />
                                     <span className="text-sm font-semibold text-green-700">Record found - Displaying your existing information</span>
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="text-xs font-bold text-gray-600 uppercase mb-2 block tracking-wide">Full Name</label>
-                                        <p className="text-base font-semibold text-gray-900">{formData.fullName}</p>
+                                        <label className="text-[10px] font-bold text-gray-600 uppercase mb-1 block tracking-wide">Full Name</label>
+                                        <p className="text-sm font-semibold text-gray-900">{formData.fullName}</p>
                                     </div>
                                     <div>
-                                        <label className="text-xs font-bold text-gray-600 uppercase mb-2 block tracking-wide">Email</label>
-                                        <p className="text-base font-semibold text-gray-900">{formData.email}</p>
+                                        <label className="text-[10px] font-bold text-gray-600 uppercase mb-1 block tracking-wide">Email</label>
+                                        <p className="text-sm font-semibold text-gray-900">{formData.email}</p>
                                     </div>
                                     <div>
-                                        <label className="text-xs font-bold text-gray-600 uppercase mb-2 block tracking-wide">Phone</label>
-                                        <p className="text-base font-semibold text-gray-900">{formData.phone}</p>
+                                        <label className="text-[10px] font-bold text-gray-600 uppercase mb-1 block tracking-wide">Phone</label>
+                                        <p className="text-sm font-semibold text-gray-900">{formData.phone}</p>
                                     </div>
                                     <div>
-                                        <label className="text-xs font-bold text-gray-600 uppercase mb-2 block tracking-wide">Gender</label>
-                                        <p className="text-base font-semibold text-gray-900">{formData.isMale ? "Male" : "Female"}</p>
+                                        <label className="text-[10px] font-bold text-gray-600 uppercase mb-1 block tracking-wide">Gender</label>
+                                        <p className="text-sm font-semibold text-gray-900">{formData.isMale ? "Male" : "Female"}</p>
                                     </div>
                                     <div>
-                                        <label className="text-xs font-bold text-gray-600 uppercase mb-2 block tracking-wide">Date of Birth</label>
-                                        <p className="text-base font-semibold text-gray-900">{formData.dateOfBirth}</p>
+                                        <label className="text-[10px] font-bold text-gray-600 uppercase mb-1 block tracking-wide">Date of Birth</label>
+                                        <p className="text-sm font-semibold text-gray-900">{formData.dateOfBirth}</p>
                                     </div>
                                     <div>
-                                        <label className="text-xs font-bold text-gray-600 uppercase mb-2 block tracking-wide">Address</label>
-                                        <p className="text-base font-semibold text-gray-900">{formData.addressLine}</p>
+                                        <label className="text-[10px] font-bold text-gray-600 uppercase mb-1 block tracking-wide">Address</label>
+                                        <p className="text-sm font-semibold text-gray-900">{formData.addressLine}</p>
                                     </div>
                                     <div>
-                                        <label className="text-xs font-bold text-gray-600 uppercase mb-2 block tracking-wide">District</label>
-                                        <p className="text-base font-semibold text-gray-900">{formData.district}</p>
+                                        <label className="text-[10px] font-bold text-gray-600 uppercase mb-1 block tracking-wide">District</label>
+                                        <p className="text-sm font-semibold text-gray-900">{formData.district}</p>
                                     </div>
                                     <div>
-                                        <label className="text-xs font-bold text-gray-600 uppercase mb-2 block tracking-wide">Province</label>
-                                        <p className="text-base font-semibold text-gray-900">{formData.province}</p>
+                                        <label className="text-[10px] font-bold text-gray-600 uppercase mb-1 block tracking-wide">Province</label>
+                                        <p className="text-sm font-semibold text-gray-900">{formData.province}</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex gap-4 pt-4">
-                                {onBack && (
-                                    <button
-                                        type="button"
-                                        onClick={onBack}
-                                        className="flex-1 px-6 py-3 rounded-xl font-semibold border-2 border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition"
-                                    >
-                                        Back
-                                    </button>
-                                )}
+                            <div className="flex gap-3 pt-2">
                                 <button
                                     type="button"
                                     onClick={() => onComplete(patientId)}
-                                    className="flex-1 px-6 py-3 rounded-xl font-semibold text-white bg-blue-600 hover:bg-blue-700 transition shadow-lg hover:shadow-xl"
+                                    className="w-full px-4 py-2 text-sm rounded-xl font-semibold text-white bg-blue-600 hover:bg-blue-700 transition shadow-lg hover:shadow-xl"
                                 >
                                     Continue to Confirmation
                                 </button>
