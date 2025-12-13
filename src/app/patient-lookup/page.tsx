@@ -1,7 +1,9 @@
 'use client';
 
 import type React from 'react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+import { useSearchParams } from 'next/navigation';
 
 import { AlertCircle, Check, Loader2, Search } from 'lucide-react';
 
@@ -90,18 +92,30 @@ export default function PatientLookup() {
   const [searchParams, setSearchParams] = useState({
     email: '',
     phone: '',
-    name: '',
-    dob: '',
   });
 
   const [patient, setPatient] = useState<Patient | null>(null);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(false);
+  const [autoSearching, setAutoSearching] = useState(false);
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  const urlSearchParams = useSearchParams();
+  const resultsRef = useRef<HTMLDivElement>(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+
+  useEffect(() => {
+    const patientId = urlSearchParams.get('patientId');
+    if (patientId) {
+      setAutoSearching(true);
+      handleSearch(undefined, patientId).finally(() => {
+        setAutoSearching(false);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlSearchParams]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -117,10 +131,10 @@ export default function PatientLookup() {
     return Number(amount).toLocaleString();
   };
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSearch = async (e?: React.FormEvent, searchById?: string) => {
+    e?.preventDefault();
 
-    if (!searchParams.email && !searchParams.phone) {
+    if (!searchById && !searchParams.email && !searchParams.phone) {
       setError('Please enter email or phone');
       return;
     }
@@ -132,10 +146,12 @@ export default function PatientLookup() {
 
     try {
       const params = new URLSearchParams();
-      if (searchParams.email) params.append('email', searchParams.email);
-      if (searchParams.phone) params.append('phone', searchParams.phone);
-      if (searchParams.name) params.append('name', searchParams.name);
-      if (searchParams.dob) params.append('dob', searchParams.dob);
+      if (searchById) {
+        params.append('id', searchById);
+      } else {
+        if (searchParams.email) params.append('email', searchParams.email);
+        if (searchParams.phone) params.append('phone', searchParams.phone);
+      }
 
       const response = await fetch(
         `${apiUrl}/patients/public/search?${params}`
@@ -163,6 +179,14 @@ export default function PatientLookup() {
         setAppointments(appointmentsData.data);
         setTotalPages(appointmentsData.meta.totalPages);
       }
+
+      // Scroll to results after successful search
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }, 100);
     } catch (err) {
       setError(
         'An error occurred while searching for the patient. Please try again.'
@@ -263,7 +287,26 @@ export default function PatientLookup() {
 
       {/* Main Content */}
       <section className='max-w-5xl mx-auto px-6 py-12'>
-        <div className='bg-white rounded-2xl shadow-xl border border-gray-100 p-8'>
+        <div className='bg-white rounded-2xl shadow-xl border border-gray-100 p-8 relative'>
+          {/* Auto-search Loading Overlay */}
+          {autoSearching && (
+            <div className='absolute inset-0 bg-white/95 backdrop-blur-sm rounded-2xl z-50 flex items-center justify-center'>
+              <div className='text-center space-y-4'>
+                <div className='inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full'>
+                  <Loader2 className='w-8 h-8 text-blue-600 animate-spin' />
+                </div>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 mb-1'>
+                    Đang tìm kiếm bệnh nhân...
+                  </h3>
+                  <p className='text-sm text-gray-600'>
+                    Vui lòng đợi trong giây lát
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Search Form Section */}
           <div className='mb-12'>
             <h2 className='text-xl font-bold mb-2 text-gray-900'>
@@ -338,7 +381,7 @@ export default function PatientLookup() {
 
           {/* Patient Information */}
           {patient && (
-            <div className='border-t pt-12'>
+            <div ref={resultsRef} className='border-t pt-12'>
               <h2 className='text-xl font-bold mb-8 text-gray-900'>
                 Patient Information
               </h2>
@@ -395,15 +438,16 @@ export default function PatientLookup() {
                             <div className='flex items-center gap-4 mb-4'>
                               <img
                                 src={
-                                  appointment.doctor.avatarUrl ||
+                                  appointment.doctor?.avatarUrl ||
                                   '/placeholder.svg'
                                 }
-                                alt={appointment.doctor.fullName}
+                                alt={appointment.doctor?.fullName || 'Doctor'}
                                 className='w-14 h-14 rounded-full object-cover border-2 border-blue-200'
                               />
                               <div>
                                 <h4 className='font-bold text-gray-900'>
-                                  {appointment.doctor.fullName}
+                                  {appointment.doctor?.fullName ||
+                                    'To Be Determined'}
                                 </h4>
                                 <p className='text-sm text-gray-500'>Doctor</p>
                               </div>
