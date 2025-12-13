@@ -16,7 +16,7 @@ async function getSpecialties() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/specialties/public`,
     {
-      next: { revalidate: 3600 },
+      next: { revalidate: 0 },
     }
   );
   if (!res.ok) throw new Error('Failed to fetch specialties');

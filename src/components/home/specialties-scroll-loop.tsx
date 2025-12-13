@@ -4,7 +4,7 @@ async function getSpecialties(): Promise<Specialty[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
   try {
     const res = await fetch(`${baseUrl}/specialties/public`, {
-      next: { revalidate: 3600 }, // Revalidate every hour
+      next: { revalidate: 0 }, // Revalidate every hour
     });
 
     if (!res.ok) {

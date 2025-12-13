@@ -11,7 +11,7 @@ async function getTopDoctors(): Promise<Doctor[]> {
     const res = await fetch(
       `${baseUrl}/doctors/profile/public?limit=4&sortBy=createdAt&sortOrder=DESC`,
       {
-        next: { revalidate: 3600 }, // Revalidate every hour
+        next: { revalidate: 0 }, // Revalidate every hour
       }
     );
 

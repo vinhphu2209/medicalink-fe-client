@@ -12,7 +12,7 @@ async function getLatestBlogs(): Promise<Blog[]> {
     const res = await fetch(
       `${baseUrl}/blogs/public?limit=3&sortBy=createdAt&sortOrder=DESC`,
       {
-        next: { revalidate: 3600 }, // Revalidate every hour
+        next: { revalidate: 0 }, // Revalidate every hour
       }
     );
 
