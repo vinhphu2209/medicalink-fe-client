@@ -20,6 +20,7 @@ import { replaceNbsps } from '@/lib/utils';
 
 interface DoctorDetail {
   id: string;
+  staffAccountId: string;
   fullName: string;
   degree: string;
   position: string[];
@@ -355,7 +356,10 @@ export default async function DoctorDetailPage({
                     Write a review for doctor{' '}
                     <span className='text-sky-800'>{doctor.fullName}</span>
                   </h3>
-                  <ReviewForm doctorId={doctor.id} />
+                  <ReviewForm
+                    accountId={doctor.staffAccountId}
+                    profileId={doctor.id}
+                  />
                 </div>
               </TabsContent>
             </Tabs>

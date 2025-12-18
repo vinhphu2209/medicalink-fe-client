@@ -10,10 +10,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 interface ReviewFormProps {
-  doctorId: string;
+  accountId: string;
+  profileId: string;
 }
 
-export function ReviewForm({ doctorId }: ReviewFormProps) {
+export function ReviewForm({ accountId, profileId }: ReviewFormProps) {
   const [rating, setRating] = useState(5);
   const [authorName, setAuthorName] = useState('');
   const [authorEmail, setAuthorEmail] = useState('');
@@ -52,30 +53,30 @@ export function ReviewForm({ doctorId }: ReviewFormProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          doctorId,
+          doctorId: accountId,
+          doctorProfileId: profileId,
           rating,
-          title: `${rating}-star review`,
+          title: `${rating}-star review from ${authorName}`,
           body,
           authorName,
           authorEmail,
         }),
       });
 
-      if (!response.ok) {
-        toast.error('Failed to submit review');
+      if (response.ok) {
+        toast.success('Review submitted successfully');
+        setSuccess(true);
+        setAuthorName('');
+        setAuthorEmail('');
+        setBody('');
+        setRating(5);
+
+        // Hide success message after 3 seconds
+        setTimeout(() => setSuccess(false), 3000);
+      } else {
+        toast.error('Failed to submit review, please try again later');
       }
-      toast.success('Review submitted successfully');
-
-      setSuccess(true);
-      setAuthorName('');
-      setAuthorEmail('');
-      setBody('');
-      setRating(5);
-
-      // Hide success message after 3 seconds
-      setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
-      console.error('[v0] Error submitting review:', err);
       setError(err instanceof Error ? err.message : 'Failed to submit review');
     } finally {
       setLoading(false);

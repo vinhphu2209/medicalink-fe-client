@@ -9,7 +9,7 @@ import { REQUEST_TIMEOUT, STORAGE_KEYS } from '@/constants/api';
 import type { ApiError, ApiResponse } from '@/types/api';
 
 const API_BASE_URL =
-  process.env.VITE_API_BASE_URL || 'https://api.medicalink.click/api';
+  process.env.NEXT_PUBLIC_API_URL || 'https://api.medicalink.click/api';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,

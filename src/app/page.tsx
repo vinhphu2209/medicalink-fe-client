@@ -13,6 +13,8 @@ import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LocationsSection } from '@/components/work-locations/locations-section';
 
+export const dynamic = 'force-dynamic';
+
 // Fallback loading components
 function DoctorsSectionSkeleton() {
   return (

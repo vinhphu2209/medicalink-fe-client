@@ -1,7 +1,7 @@
 'use client';
 
 import type React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
@@ -88,7 +88,7 @@ interface AppointmentResponse {
   };
 }
 
-export default function PatientLookup() {
+function PatientLookupContent() {
   const [searchParams, setSearchParams] = useState({
     email: '',
     phone: '',
@@ -321,7 +321,7 @@ export default function PatientLookup() {
               <div className='bg-linear-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl border border-blue-100'>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                   <div>
-                    <label className='block text-sm text-sm font-semibold text-gray-900 mb-3'>
+                    <label className='block text-sm font-semibold text-gray-900 mb-3'>
                       Email Address
                     </label>
                     <Input
@@ -334,7 +334,7 @@ export default function PatientLookup() {
                     />
                   </div>
                   <div>
-                    <label className='block text-sm text-sm font-semibold text-gray-900 mb-3'>
+                    <label className='block text-sm font-semibold text-gray-900 mb-3'>
                       Phone Number
                     </label>
                     <Input
@@ -620,5 +620,19 @@ export default function PatientLookup() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function PatientLookup() {
+  return (
+    <Suspense
+      fallback={
+        <div className='min-h-screen flex items-center justify-center'>
+          <Loader2 className='w-8 h-8 text-blue-600 animate-spin' />
+        </div>
+      }
+    >
+      <PatientLookupContent />
+    </Suspense>
   );
 }
