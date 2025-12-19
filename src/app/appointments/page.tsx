@@ -48,7 +48,7 @@ export default function AppointmentsPage() {
     }
 
     return (
-        <div className="bg-linear-to-b from-blue-50/50 to-white">
+        <div className="bg-white min-h-screen">
             {/* Hero Section - Ultra Compact */}
             <section className="relative bg-linear-to-br from-[#0A2463] via-[#1e3a8a] to-[#2563eb] pt-[88px] pb-3 md:pb-4 overflow-hidden">
                 {/* Animated Background */}

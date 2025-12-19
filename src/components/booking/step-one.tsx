@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
+import { Calendar as CalendarComponent } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { AlertCircle, Calendar } from "lucide-react"
+import { format } from "date-fns"
+import { cn } from "@/lib/utils"
 
 interface Location {
     id: string
@@ -49,9 +53,13 @@ export default function StepOne({ onComplete, onBack }: any) {
     const [selectedDoctorName, setSelectedDoctorName] = useState("")
     const [selectedDate, setSelectedDate] = useState("")
     const [selectedTime, setSelectedTime] = useState("")
+    const [availableDatesInMonth, setAvailableDatesInMonth] = useState<string[]>([])
+    const [calendarOpen, setCalendarOpen] = useState(false)
+    const [currentMonth, setCurrentMonth] = useState<Date>(new Date())
 
     const [loadingDoctors, setLoadingDoctors] = useState(false)
     const [loadingSlots, setLoadingSlots] = useState(false)
+    const [loadingMonthlySlots, setLoadingMonthlySlots] = useState(false)
     const [loadingSubmit, setLoadingSubmit] = useState(false)
 
     const [error, setError] = useState("")
@@ -102,6 +110,25 @@ export default function StepOne({ onComplete, onBack }: any) {
             setDoctors(data.data || [])
         } catch {
             setError("Failed to load doctors")
+        }
+    }
+
+    const fetchMonthlySlots = async (doctorId: string, month: number, year: number) => {
+        if (!doctorId) return
+
+        setLoadingMonthlySlots(true)
+
+        try {
+            const res = await fetch(
+                `${baseUrl}/doctors/profile/${doctorId}/month-slots?month=${month}&year=${year}`
+            )
+            const data = await res.json()
+            setAvailableDatesInMonth(data.data?.availableDates || [])
+        } catch {
+            setError("Failed to load available dates")
+            setAvailableDatesInMonth([])
+        } finally {
+            setLoadingMonthlySlots(false)
         }
     }
 
@@ -204,6 +231,10 @@ export default function StepOne({ onComplete, onBack }: any) {
         setSelectedDate("")
         setSelectedTime("")
         setTimeSlots([])
+
+        // Fetch current month's available dates
+        const now = new Date()
+        fetchMonthlySlots(doctorId, now.getMonth() + 1, now.getFullYear())
 
         // If location and specialty are not selected yet (doctor-first mode)
         if (!selectedLocation && !selectedSpecialty) {
@@ -405,17 +436,88 @@ export default function StepOne({ onComplete, onBack }: any) {
                             Select Appointment Date
                             <span className="text-red-500">*</span>
                         </label>
-                        <div className="relative">
-                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                            <input
-                                type="date"
-                                disabled={!selectedDoctor}
-                                value={selectedDate}
-                                onChange={(e) => handleDateChange(e.target.value)}
-                                min={new Date().toISOString().split('T')[0]}
-                                className="w-full pl-10 pr-3 py-2 border-2 border-gray-200 rounded-xl bg-white hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-medium text-sm shadow-sm disabled:bg-gray-50 disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-400 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60 [&::-webkit-calendar-picker-indicator]:hover:opacity-100 placeholder:text-gray-400"
-                            />
-                        </div>
+                        <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                            <PopoverTrigger asChild>
+                                <button
+                                    type="button"
+                                    disabled={!selectedDoctor}
+                                    className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl bg-white hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-medium text-sm shadow-sm disabled:bg-gray-50 disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-400 text-left flex items-center gap-2"
+                                >
+                                    <Calendar className="w-4 h-4 text-gray-400 shrink-0" />
+                                    <span className={selectedDate ? "text-gray-900" : "text-gray-400"}>
+                                        {selectedDate ? format(new Date(selectedDate), "MMMM d, yyyy") : "Choose appointment date"}
+                                    </span>
+                                </button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                                {loadingMonthlySlots ? (
+                                    <div className="p-4 text-center text-sm text-gray-600">
+                                        Loading available dates...
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <CalendarComponent
+                                            mode="single"
+                                            selected={selectedDate ? new Date(selectedDate) : undefined}
+                                            month={currentMonth}
+                                            onMonthChange={(month) => {
+                                                setCurrentMonth(month)
+                                                if (selectedDoctor) {
+                                                    fetchMonthlySlots(
+                                                        selectedDoctor,
+                                                        month.getMonth() + 1,
+                                                        month.getFullYear()
+                                                    )
+                                                }
+                                            }}
+                                            onSelect={(date) => {
+                                                if (date) {
+                                                    const formattedDate = format(date, "yyyy-MM-dd")
+                                                    handleDateChange(formattedDate)
+                                                    setCalendarOpen(false)
+                                                }
+                                            }}
+                                            disabled={(date) => {
+                                                // Disable past dates
+                                                const today = new Date()
+                                                today.setHours(0, 0, 0, 0)
+                                                if (date < today) return true
+
+                                                // Disable dates not in available dates
+                                                const dateStr = format(date, "yyyy-MM-dd")
+                                                return !availableDatesInMonth.includes(dateStr)
+                                            }}
+                                            modifiers={{
+                                                available: (date) => {
+                                                    const dateStr = format(date, "yyyy-MM-dd")
+                                                    return availableDatesInMonth.includes(dateStr)
+                                                }
+                                            }}
+                                            modifiersClassNames={{
+                                                available: "relative after:content-[''] after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1.5 after:h-1.5 after:bg-blue-600 after:rounded-full"
+                                            }}
+                                            classNames={{
+                                                month: "w-full",
+                                                month_caption: "text-base font-semibold",
+                                                day_button: cn(
+                                                    "w-10 h-10 text-sm",
+                                                    "hover:bg-accent hover:text-accent-foreground",
+                                                    "disabled:opacity-30 disabled:cursor-not-allowed"
+                                                ),
+                                                chevron: "w-5 h-5"
+                                            }}
+                                            initialFocus
+                                        />
+                                        <div className="px-4 pb-3 pt-2 border-t border-gray-200">
+                                            <div className="flex items-center gap-2 text-xs text-gray-600">
+                                                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                                                <span>Doctor has available appointments</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </PopoverContent>
+                        </Popover>
                     </div>
                 </div>
             </div>
