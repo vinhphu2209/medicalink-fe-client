@@ -178,7 +178,7 @@ export default async function DoctorDetailPage({
                 </div>
 
                 <div className='pt-2 flex justify-center md:justify-end'>
-                  <Link href={`/appointments`}>
+                  <Link href={`/appointments?doctorId=${doctor.id}`}>
                     <Button
                       size='lg'
                       className='bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 shadow-lg shadow-blue-600/20'

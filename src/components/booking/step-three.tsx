@@ -1,125 +1,175 @@
-"use client"
+'use client';
 
-import type React from "react"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { AlertCircle } from "lucide-react"
+import type React from 'react';
+import { useState } from 'react';
+
+import { AlertCircle, Calendar, Clock, MapPin, User } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 interface StepThreeProps {
-    onComplete: () => void
-    bookingData: any
-    onBack?: () => void
+  onComplete: () => void;
+  bookingData: any;
+  onBack?: () => void;
 }
 
-// Format time: "14:00" → "2:00 PM"
 function formatToAmPm(time: string) {
-    const [hour, minute] = time.split(":")
-    let h = parseInt(hour, 10)
-    const suffix = h >= 12 ? "PM" : "AM"
+  const [hour, minute] = time.split(':');
+  let h = parseInt(hour, 10);
+  const suffix = h >= 12 ? 'PM' : 'AM';
 
-    if (h === 0) h = 12
-    else if (h > 12) h -= 12
+  if (h === 0) h = 12;
+  else if (h > 12) h -= 12;
 
-    return `${h}:${minute} ${suffix}`
+  return `${h}:${minute} ${suffix}`;
 }
 
-// Format date: convert to "Jan 10, 2025"
 function formatDate(dateString: string) {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-    })
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 }
 
-export default function StepThree({ onComplete, bookingData, onBack }: StepThreeProps) {
-    const [reason, setReason] = useState("")
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState("")
+export default function StepThree({
+  onComplete,
+  bookingData,
+  onBack,
+}: StepThreeProps) {
+  const [reason, setReason] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setLoading(true)
-        setError("")
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
 
-        try {
-            const res = await fetch(`${baseUrl}/appointments/public`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    eventId: bookingData.eventId,
-                    patientId: bookingData.patientId,
-                    specialtyId: bookingData.specialtyId,
-                    reason: reason || "Regular checkup",
-                }),
-            })
+    try {
+      const res = await fetch(`${baseUrl}/appointments/public`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          eventId: bookingData.eventId,
+          patientId: bookingData.patientId,
+          specialtyId: bookingData.specialtyId,
+          reason: reason || 'Regular checkup',
+        }),
+      });
 
-            if (!res.ok) throw new Error("Failed to book appointment")
+      if (!res.ok) throw new Error('Failed to book appointment');
 
-            onComplete()
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to book appointment")
-        } finally {
-            setLoading(false)
-        }
+      onComplete();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Failed to book appointment'
+      );
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return (
-        <div className="space-y-4">
-            {error && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-2 text-sm">
-                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                    <span className="font-medium">{error}</span>
-                </div>
-            )}
+  return (
+    <div className='space-y-3'>
+      {error && (
+        <Card className='p-2 bg-red-50 border-red-200'>
+          <div className='flex items-start gap-2'>
+            <AlertCircle className='w-4 h-4 text-red-600 shrink-0 mt-0.5' />
+            <span className='text-xs text-red-900 font-medium'>{error}</span>
+          </div>
+        </Card>
+      )}
 
-            <div className="bg-linear-to-br from-blue-50 to-indigo-50 rounded-2xl p-4 border border-blue-100">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Appointment Summary</h2>
-                <div className="space-y-3">
-                    <div className="flex items-center justify-between pb-2 border-b border-blue-200">
-                        <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Doctor</span>
-                        <p className="font-bold text-base text-gray-900">{bookingData.doctorName}</p>
-                    </div>
-                    <div className="flex items-center justify-between pb-2 border-b border-blue-200">
-                        <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Date</span>
-                        <p className="font-bold text-base text-gray-900">{formatDate(bookingData.serviceDate)}</p>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Time</span>
-                        <p className="font-bold text-base text-gray-900">
-                            {formatToAmPm(bookingData.timeStart)} - {formatToAmPm(bookingData.timeEnd)}
-                        </p>
-                    </div>
-                </div>
+      <Card className='p-3'>
+        <h2 className='text-base font-semibold text-gray-900 mb-2'>
+          Appointment Summary
+        </h2>
+        <div className='space-y-2'>
+          {bookingData.locationName && (
+            <div className='flex items-start justify-between pb-2 border-b'>
+              <div className='flex items-center gap-1.5 text-xs text-gray-600'>
+                <MapPin className='w-3.5 h-3.5' />
+                <span className='font-medium'>Location</span>
+              </div>
+              <div className='text-right'>
+                <p className='text-sm font-medium text-gray-900'>
+                  {bookingData.locationName}
+                </p>
+                {bookingData.locationAddress && (
+                  <p className='text-xs text-gray-600 mt-0.5'>
+                    {bookingData.locationAddress}
+                  </p>
+                )}
+              </div>
             </div>
-
-            {/* Reason Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label className="block text-xs font-bold text-gray-900 mb-1.5 uppercase tracking-wide">Reason for Visit</label>
-                    <textarea
-                        value={reason}
-                        onChange={(e) => setReason(e.target.value)}
-                        placeholder="Describe the reason for your visit or any concerns..."
-                        rows={4}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none font-medium placeholder:text-gray-400"
-                    />
-                </div>
-
-                <div className="flex gap-3 pt-2">
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`w-full px-4 py-2 text-sm rounded-xl font-semibold text-white transition shadow-lg ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 hover:shadow-xl'
-                            }`}
-                    >
-                        {loading ? "Processing..." : "Complete Booking"}
-                    </button>
-                </div>
-            </form>
+          )}
+          <div className='flex items-center justify-between pb-2 border-b'>
+            <div className='flex items-center gap-1.5 text-xs text-gray-600'>
+              <User className='w-3.5 h-3.5' />
+              <span className='font-medium'>Doctor</span>
+            </div>
+            <p className='text-sm font-medium text-gray-900'>
+              {bookingData.doctorName}
+            </p>
+          </div>
+          <div className='flex items-center justify-between pb-2 border-b'>
+            <div className='flex items-center gap-1.5 text-xs text-gray-600'>
+              <Calendar className='w-3.5 h-3.5' />
+              <span className='font-medium'>Date</span>
+            </div>
+            <p className='text-sm font-medium text-gray-900'>
+              {formatDate(bookingData.serviceDate)}
+            </p>
+          </div>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center gap-1.5 text-xs text-gray-600'>
+              <Clock className='w-3.5 h-3.5' />
+              <span className='font-medium'>Time</span>
+            </div>
+            <p className='text-sm font-medium text-gray-900'>
+              {formatToAmPm(bookingData.timeStart)} -{' '}
+              {formatToAmPm(bookingData.timeEnd)}
+            </p>
+          </div>
         </div>
-    )
+      </Card>
+
+      <form onSubmit={handleSubmit} className='space-y-2'>
+        <div className='space-y-1'>
+          <Label className='text-xs'>Reason for Visit</Label>
+          <Textarea
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            placeholder='Describe the reason for your visit or any concerns...'
+            rows={4}
+            className='text-sm resize-none'
+          />
+        </div>
+
+        <div className='flex gap-2'>
+          {onBack && (
+            <Button
+              type='button'
+              onClick={onBack}
+              variant='outline'
+              size='sm'
+              className='min-w-24'
+            >
+              Back
+            </Button>
+          )}
+          <Button type='submit' disabled={loading} className='flex-1' size='sm'>
+            {loading ? 'Processing...' : 'Complete Booking'}
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
 }
