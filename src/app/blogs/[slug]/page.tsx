@@ -4,6 +4,7 @@ import parse from 'html-react-parser';
 import { Calendar, ChevronRight, Clock, Tag, User } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { replaceNbsps } from '@/lib/utils';
 import type { Blog, BlogCategory } from '@/types/blog';
 
 // Server-side data fetching functions
@@ -175,8 +176,8 @@ export default async function BlogDetailPage({
               <div className='h-px w-full bg-gray-200 my-6' />
 
               {/* Content HTML */}
-              <div className='prose prose-lg max-w-none prose-blue prose-headings:font-bold prose-img:rounded-xl [&_img]:max-w-[95%] [&_img]:mx-auto [&_img]:my-2'>
-                {parse(blog?.content || 'No content available')}
+              <div className='blog-content max-w-none prose-blue prose-headings:font-bold prose-img:rounded-xl [&_img]:max-w-[95%] [&_img]:mx-auto [&_img]:my-2'>
+                {parse(replaceNbsps(blog?.content || 'No content available'))}
               </div>
             </article>
 

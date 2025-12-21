@@ -142,3 +142,17 @@ ol {
 .ql-align-left {
   @apply text-left;
 }
+
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6 {
+  @apply mt-4 mb-2 font-bold;
+}
+
+.blog-content * {
+  /* wrap text */
+  @apply break-words;
+}
