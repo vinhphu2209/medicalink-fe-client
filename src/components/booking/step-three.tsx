@@ -91,10 +91,10 @@ export default function StepThree({
         <h2 className='text-base font-semibold text-gray-900 mb-2'>
           Appointment Summary
         </h2>
-        <div className='space-y-2'>
+        <div className='space-y-3'>
           {bookingData.locationName && (
             <div className='flex items-start justify-between pb-2 border-b'>
-              <div className='flex items-center gap-1.5 text-xs text-gray-600'>
+              <div className='flex items-center gap-1.5 text-sm text-gray-600'>
                 <MapPin className='w-3.5 h-3.5' />
                 <span className='font-medium'>Location</span>
               </div>
@@ -111,7 +111,7 @@ export default function StepThree({
             </div>
           )}
           <div className='flex items-center justify-between pb-2 border-b'>
-            <div className='flex items-center gap-1.5 text-xs text-gray-600'>
+            <div className='flex items-center gap-1.5 text-sm text-gray-600'>
               <User className='w-3.5 h-3.5' />
               <span className='font-medium'>Doctor</span>
             </div>
@@ -120,7 +120,7 @@ export default function StepThree({
             </p>
           </div>
           <div className='flex items-center justify-between pb-2 border-b'>
-            <div className='flex items-center gap-1.5 text-xs text-gray-600'>
+            <div className='flex items-center gap-1.5 text-sm text-gray-600'>
               <Calendar className='w-3.5 h-3.5' />
               <span className='font-medium'>Date</span>
             </div>
@@ -129,7 +129,7 @@ export default function StepThree({
             </p>
           </div>
           <div className='flex items-center justify-between'>
-            <div className='flex items-center gap-1.5 text-xs text-gray-600'>
+            <div className='flex items-center gap-1.5 text-sm text-gray-600'>
               <Clock className='w-3.5 h-3.5' />
               <span className='font-medium'>Time</span>
             </div>
@@ -141,31 +141,36 @@ export default function StepThree({
         </div>
       </Card>
 
-      <form onSubmit={handleSubmit} className='space-y-2'>
-        <div className='space-y-1'>
-          <Label className='text-xs'>Reason for Visit</Label>
+      <form onSubmit={handleSubmit} className='space-y-3'>
+        <div className='space-y-2'>
+          <Label className='text-sm'>Reason for Visit</Label>
           <Textarea
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder='Describe the reason for your visit or any concerns...'
-            rows={4}
-            className='text-sm resize-none'
+            rows={6}
+            className='text-sm resize-none h-40'
           />
         </div>
 
-        <div className='flex gap-2'>
+        <div className='flex gap-2 justify-between'>
           {onBack && (
             <Button
               type='button'
               onClick={onBack}
               variant='outline'
               size='sm'
-              className='min-w-24'
+              className='min-w-24 h-10'
             >
               Back
             </Button>
           )}
-          <Button type='submit' disabled={loading} className='flex-1' size='sm'>
+          <Button
+            type='submit'
+            disabled={loading}
+            className='flex-1 h-10 max-w-48'
+            size='sm'
+          >
             {loading ? 'Processing...' : 'Complete Booking'}
           </Button>
         </div>

@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import {
   AlertCircle,
+  ArrowLeft,
   CheckCircle2,
   Search,
   UserCheck,
@@ -151,7 +152,7 @@ export default function StepTwo({
         <Card className='p-2 bg-red-50 border-red-200'>
           <div className='flex items-start gap-2'>
             <AlertCircle className='w-4 h-4 text-red-600 shrink-0 mt-0.5' />
-            <span className='text-xs text-red-900 font-medium'>{error}</span>
+            <span className='text-sm text-red-900 font-medium'>{error}</span>
           </div>
         </Card>
       )}
@@ -185,7 +186,7 @@ export default function StepTwo({
           <form onSubmit={handleSubmit} className='space-y-3'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
               <div className='space-y-2'>
-                <Label className='text-xs'>
+                <Label className='text-sm'>
                   Full Name <span className='text-red-500'>*</span>
                 </Label>
                 <Input
@@ -198,7 +199,7 @@ export default function StepTwo({
                 />
               </div>
               <div className='space-y-2'>
-                <Label className='text-xs'>
+                <Label className='text-sm'>
                   Email <span className='text-red-500'>*</span>
                 </Label>
                 <Input
@@ -214,7 +215,7 @@ export default function StepTwo({
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
               <div className='space-y-2'>
-                <Label className='text-xs'>
+                <Label className='text-sm'>
                   Phone Number <span className='text-red-500'>*</span>
                 </Label>
                 <Input
@@ -227,7 +228,7 @@ export default function StepTwo({
                 />
               </div>
               <div className='space-y-2'>
-                <Label className='text-xs'>
+                <Label className='text-sm'>
                   Gender <span className='text-red-500'>*</span>
                 </Label>
                 <div className='flex gap-4 h-8 items-center'>
@@ -258,7 +259,7 @@ export default function StepTwo({
             </div>
 
             <div className='space-y-2'>
-              <Label className='text-xs'>
+              <Label className='text-sm'>
                 Date of Birth <span className='text-red-500'>*</span>
               </Label>
               <Input
@@ -272,7 +273,7 @@ export default function StepTwo({
             </div>
 
             <div className='space-y-2'>
-              <Label className='text-xs'>
+              <Label className='text-sm'>
                 Address <span className='text-red-500'>*</span>
               </Label>
               <Input
@@ -288,7 +289,7 @@ export default function StepTwo({
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
               <div className='space-y-2'>
-                <Label className='text-xs'>
+                <Label className='text-sm'>
                   District <span className='text-red-500'>*</span>
                 </Label>
                 <Input
@@ -301,7 +302,7 @@ export default function StepTwo({
                 />
               </div>
               <div className='space-y-2'>
-                <Label className='text-xs'>
+                <Label className='text-sm'>
                   Province <span className='text-red-500'>*</span>
                 </Label>
                 <Input
@@ -315,22 +316,23 @@ export default function StepTwo({
               </div>
             </div>
 
-            <div className='flex gap-2'>
+            <div className='flex gap-2 justify-between'>
               {onBack && (
                 <Button
                   type='button'
                   onClick={onBack}
                   variant='outline'
                   size='sm'
-                  className='min-w-24'
+                  className='min-w-24 h-10'
                 >
+                  <ArrowLeft className='w-4 h-4 mr-1.5' />
                   Back
                 </Button>
               )}
               <Button
                 type='submit'
                 disabled={loading}
-                className='flex-1'
+                className='h-10 max-w-48'
                 size='sm'
               >
                 {loading ? 'Processing...' : 'Continue to Confirmation'}
@@ -341,14 +343,14 @@ export default function StepTwo({
 
         {/* Returning Patient Tab */}
         <TabsContent value='existing' className='mt-3 space-y-3'>
-          <Card className='p-2 bg-gray-50'>
-            <p className='text-xs text-gray-700 mb-2 font-medium'>
+          <Card className='p-4 bg-gray-50'>
+            <p className='text-base text-gray-700 font-medium'>
               Search for your existing record:
             </p>
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mb-2'>
               <div className='space-y-2'>
-                <Label className='text-xs'>Search By</Label>
+                <Label className='text-sm'>Search By</Label>
                 <select
                   value={searchType}
                   onChange={(e) => setSearchType(e.target.value as any)}
@@ -359,7 +361,7 @@ export default function StepTwo({
                 </select>
               </div>
               <div className='space-y-2'>
-                <Label className='text-xs'>Enter Value</Label>
+                <Label className='text-sm'>Enter Value</Label>
                 <Input
                   type='text'
                   value={searchQuery}
@@ -373,7 +375,7 @@ export default function StepTwo({
             <Button
               onClick={handleSearch}
               disabled={searchLoading}
-              className='w-full'
+              className='w-full h-10 max-w-48 ml-auto'
               size='sm'
               variant='secondary'
             >
@@ -384,79 +386,99 @@ export default function StepTwo({
 
           {foundPatient && (
             <>
-              <Card className='p-2 bg-green-50 border-green-200'>
-                <div className='flex items-start gap-2 pb-2 mb-2 border-b border-green-200'>
+              <Card className='p-4 bg-green-50 border-green-200 gap-4'>
+                <div className='flex items-start gap-2 pb-2 border-b border-green-200'>
                   <CheckCircle2 className='w-4 h-4 text-green-600 shrink-0 mt-0.5' />
-                  <span className='text-xs font-medium text-green-900'>
+                  <span className='text-base font-medium text-green-900'>
                     Record found
                   </span>
                 </div>
 
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
                   <div>
-                    <Label className='text-[10px] font-medium text-gray-600 uppercase'>
+                    <Label className='text-xs font-medium text-gray-600 uppercase'>
                       Full Name
                     </Label>
-                    <p className='text-sm text-gray-900'>{formData.fullName}</p>
+                    <p className='text-base text-gray-900'>
+                      {formData.fullName}
+                    </p>
                   </div>
                   <div>
-                    <Label className='text-[10px] font-medium text-gray-600 uppercase'>
+                    <Label className='text-xs font-medium text-gray-600 uppercase'>
                       Email
                     </Label>
-                    <p className='text-sm text-gray-900'>{formData.email}</p>
+                    <p className='text-base text-gray-900'>{formData.email}</p>
                   </div>
                   <div>
-                    <Label className='text-[10px] font-medium text-gray-600 uppercase'>
+                    <Label className='text-xs font-medium text-gray-600 uppercase'>
                       Phone
                     </Label>
-                    <p className='text-sm text-gray-900'>{formData.phone}</p>
+                    <p className='text-base text-gray-900'>{formData.phone}</p>
                   </div>
                   <div>
-                    <Label className='text-[10px] font-medium text-gray-600 uppercase'>
+                    <Label className='text-xs font-medium text-gray-600 uppercase'>
                       Gender
                     </Label>
-                    <p className='text-sm text-gray-900'>
+                    <p className='text-base text-gray-900'>
                       {formData.isMale ? 'Male' : 'Female'}
                     </p>
                   </div>
                   <div>
-                    <Label className='text-[10px] font-medium text-gray-600 uppercase'>
+                    <Label className='text-xs font-medium text-gray-600 uppercase'>
                       Date of Birth
                     </Label>
-                    <p className='text-sm text-gray-900'>
+                    <p className='text-base text-gray-900'>
                       {formData.dateOfBirth}
                     </p>
                   </div>
                   <div>
-                    <Label className='text-[10px] font-medium text-gray-600 uppercase'>
+                    <Label className='text-xs font-medium text-gray-600 uppercase'>
                       Address
                     </Label>
-                    <p className='text-sm text-gray-900'>
+                    <p className='text-base text-gray-900'>
                       {formData.addressLine}
                     </p>
                   </div>
                   <div>
-                    <Label className='text-[10px] font-medium text-gray-600 uppercase'>
+                    <Label className='text-xs font-medium text-gray-600 uppercase'>
                       District
                     </Label>
-                    <p className='text-sm text-gray-900'>{formData.district}</p>
+                    <p className='text-base text-gray-900'>
+                      {formData.district}
+                    </p>
                   </div>
                   <div>
-                    <Label className='text-[10px] font-medium text-gray-600 uppercase'>
+                    <Label className='text-xs font-medium text-gray-600 uppercase'>
                       Province
                     </Label>
-                    <p className='text-sm text-gray-900'>{formData.province}</p>
+                    <p className='text-base text-gray-900'>
+                      {formData.province}
+                    </p>
                   </div>
                 </div>
               </Card>
-              <Button
-                type='button'
-                onClick={() => onComplete(patientId)}
-                className='w-full'
-                size='sm'
-              >
-                Continue to Confirmation
-              </Button>
+              <div className='flex gap-2 justify-end'>
+                {onBack && (
+                  <Button
+                    type='button'
+                    onClick={onBack}
+                    variant='outline'
+                    size='sm'
+                    className='min-w-24 h-10'
+                  >
+                    <ArrowLeft className='w-4 h-4 mr-1.5' />
+                    Back
+                  </Button>
+                )}
+                <Button
+                  type='button'
+                  onClick={() => onComplete(patientId)}
+                  className='h-10 max-w-48 ml-auto'
+                  size='sm'
+                >
+                  Continue to Confirmation
+                </Button>
+              </div>
             </>
           )}
         </TabsContent>

@@ -98,6 +98,7 @@ export default function StepOne({ onComplete, onBack, initialDoctorId }: any) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
   const doctorAbortRef = useRef<AbortController | null>(null);
+  const hasAutoSelectedRef = useRef(false);
 
   useEffect(() => {
     fetchLocations();
@@ -105,11 +106,17 @@ export default function StepOne({ onComplete, onBack, initialDoctorId }: any) {
     fetchAllDoctors();
   }, []);
 
-  // Auto-select doctor when initialDoctorId is provided and doctors list is loaded
+  // Auto-select doctor when initialDoctorId is provided and doctors list is loaded (only once)
   useEffect(() => {
-    if (initialDoctorId && allDoctors.length > 0 && !selectedDoctor) {
+    if (
+      initialDoctorId &&
+      allDoctors.length > 0 &&
+      !selectedDoctor &&
+      !hasAutoSelectedRef.current
+    ) {
       const doctorExists = allDoctors.find((d) => d.id === initialDoctorId);
       if (doctorExists) {
+        hasAutoSelectedRef.current = true;
         handleDoctorChange(initialDoctorId);
       }
     }
@@ -408,7 +415,7 @@ export default function StepOne({ onComplete, onBack, initialDoctorId }: any) {
       <Card className='p-3 bg-blue-50 border-blue-200'>
         <div className='flex gap-2 items-start'>
           <Info className='w-4 h-4 text-blue-600 shrink-0 mt-0.5' />
-          <div className='text-xs text-blue-900'>
+          <div className='text-sm text-blue-900'>
             <p className='font-medium'>Choose your booking method:</p>
             <p className='text-blue-700 mt-0.5'>
               Select a <strong>doctor first</strong> to auto-fill location &
@@ -429,7 +436,7 @@ export default function StepOne({ onComplete, onBack, initialDoctorId }: any) {
       )}
 
       {/* Selection Form */}
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
         {/* Location */}
         <div className='space-y-2'>
           <Label className='flex items-center gap-1.5 text-sm font-medium'>
@@ -639,8 +646,9 @@ export default function StepOne({ onComplete, onBack, initialDoctorId }: any) {
           </Label>
 
           {loadingSlots && (
-            <Card className='p-2 bg-blue-50 border-blue-200'>
-              <p className='text-xs text-blue-900'>Loading time slots...</p>
+            <Card className='p-2 h-40 flex justify-center items-center bg-blue-50 border-blue-200'>
+              <Loader2 className='size-8 text-blue-600 animate-spin' />
+              <p className='text-sm text-blue-900'>Loading time slots...</p>
             </Card>
           )}
 
@@ -776,7 +784,7 @@ export default function StepOne({ onComplete, onBack, initialDoctorId }: any) {
           }}
           variant='outline'
           size='sm'
-          className='min-w-24'
+          className='min-w-28 h-10'
         >
           <RotateCcw className='w-3.5 h-3.5 mr-1.5' />
           Clear
@@ -784,7 +792,7 @@ export default function StepOne({ onComplete, onBack, initialDoctorId }: any) {
         <Button
           onClick={handleSubmit}
           disabled={loadingSubmit || !selectedTime}
-          className='flex-1'
+          className='h-10 ml-auto'
           size='sm'
         >
           {loadingSubmit ? (
